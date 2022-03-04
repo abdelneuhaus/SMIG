@@ -125,7 +125,7 @@ class MyWindow:
         
         self.text = Text(self.sequence, height = 10, width = 55)
         self.text.grid(row=2, column=0, sticky='W', padx=5, pady=10)
-        self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2,3,4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
+        self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2, 3, 4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
         
         self.check_use_perso = BooleanVar()
         self.check_use_perso.set(False)
