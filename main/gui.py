@@ -46,11 +46,9 @@ class MyWindow:
         self.bliking = LabelFrame(win, text=" BLINKING PARAMETERS ")
         self.bliking['font'] = helv36
         self.bliking.grid(row=2, columnspan=4, sticky='NW', padx=5, pady=5, ipadx=5, ipady=15)
-        # self.bliking.columnconfigure(2, pad=4)
         self.space1 = Label(self.bliking, text="")
         self.space1.grid(row=0, column=0, sticky='W', padx=5, pady=0)
         
-
         
         # Number of blinks per molecule
         self.blink_label = Label(self.bliking, text="Number of blinks per molecule")
