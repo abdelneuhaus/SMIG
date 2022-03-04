@@ -18,7 +18,7 @@ class MyWindow:
         ### SIMULATIONS PARAMETERS ###
         self.simulation_parameters = LabelFrame(win, text=" SIMULATION PARAMETERS ")
         self.simulation_parameters['font'] = helv36
-        self.simulation_parameters.grid(row=0, columnspan=7, sticky='NW', padx=5, pady=5, ipadx=48, ipady=40)
+        self.simulation_parameters.grid(row=0, columnspan=1, sticky='NW', padx=8, pady=5, ipady=40 ,ipadx=8)
         self.space = Label(self.simulation_parameters, text="")
         self.space.grid(row=0, column=0, sticky='W', padx=5, pady=3)
         
@@ -45,10 +45,12 @@ class MyWindow:
         ### BLIKING ###
         self.bliking = LabelFrame(win, text=" BLINKING PARAMETERS ")
         self.bliking['font'] = helv36
-        self.bliking.grid(row=2, columnspan=7, sticky='NW', padx=5, pady=5, ipadx=5, ipady=15)
-        self.bliking.columnconfigure(2, pad=4)
+        self.bliking.grid(row=2, columnspan=4, sticky='NW', padx=5, pady=5, ipadx=5, ipady=15)
+        # self.bliking.columnconfigure(2, pad=4)
         self.space1 = Label(self.bliking, text="")
         self.space1.grid(row=0, column=0, sticky='W', padx=5, pady=0)
+        
+
         
         # Number of blinks per molecule
         self.blink_label = Label(self.bliking, text="Number of blinks per molecule")
@@ -116,6 +118,19 @@ class MyWindow:
         
         
         
+        # PERSONALIZE SEQUENCE
+        self.sequence = LabelFrame(win, text="Sequence of blinks to enter")
+        self.sequence['font'] = information
+        self.sequence.grid(row=2, column=3, sticky='NW', padx=5, pady=10)
+        
+        self.text = Text(self.sequence, height = 10, width = 55)
+        self.text.grid(row=2, column=0, sticky='W', padx=5, pady=10)
+        self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2,3,4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
+        
+        self.check_use_perso = BooleanVar()
+        self.check_use_perso.set(False)
+        self.use_perso = Button(self.sequence, text="Validate", command=None)
+        self.use_perso.grid(row=3, column=0, sticky='WE', padx=5, pady=3)
         
         
         
@@ -138,19 +153,19 @@ class MyWindow:
         ### OTHERS PARAMETERS ###
         self.others = LabelFrame(win, text=" OTHER PARAMETERS ")
         self.others['font'] = helv36
-        self.others.grid(row=2, column=7, columnspan=7, sticky='NW', padx=5, pady=5, ipadx=5, ipady=15)
+        self.others.grid(row=0, column=3, columnspan=1, sticky='NW', padx=5, pady=5, ipadx=5, ipady=5)
         self.space1 = Label(self.others, text="")
         self.space1.grid(row=0, column=0, sticky='W', padx=5, pady=3)
 
         self.predifined = BooleanVar()
         self.predifined.set(False)
-        self.check_predifined = Checkbutton(self.others, text='Use predifined parameters', command=self.check_predifined_parameters, var=self.predifined) 
-        self.check_predifined.grid(row=8, column=0, columnspan=3, sticky="W", pady=3)
+        self.check_predifined = Button(self.others, text='Use predifined parameters', command=self.check_predifined_parameters)
+        self.check_predifined.grid(row=8, column=0, columnspan=7, sticky="WE", pady=3, padx=5)
 
         self.delete = BooleanVar()
         self.delete.set(False)
-        self.delete_check = Checkbutton(self.others, text='Delete all settings', command=self.check_delete, var=self.delete) 
-        self.delete_check.grid(row=9, column=0, columnspan=3, sticky="W", pady=3)
+        self.delete_check = Button(self.others, text='Delete all settings', command=self.check_delete)
+        self.delete_check.grid(row=9, column=0, columnspan=7, sticky="WE", pady=3, ipadx=1, padx=5)
         
         self.ssss = Label(self.others, text=" ")
         self.ssss.grid(row=10, column=0, sticky='W', padx=5, pady=10)
@@ -166,7 +181,7 @@ class MyWindow:
         self.beads_int_bool = BooleanVar()
         self.beads_int_bool.set(False)
         self.check_beads_int_bool = Checkbutton(self.others, text='Use beads-like intensity', command=self.set_beads_like_intensity, var=self.beads_int_bool) 
-        self.check_beads_int_bool.grid(row=13, column=0, columnspan=3, sticky="W", pady=3)
+        self.check_beads_int_bool.grid(row=13, column=0, columnspan=3, sticky="W", pady=0)
 
 
 
@@ -176,7 +191,7 @@ class MyWindow:
         ### CAMERA PARAMETERS ###
         self.camera = LabelFrame(win, text=" CAMERA PARAMETERS ")
         self.camera['font'] = helv36
-        self.camera.grid(row=0, column=7, columnspan=7, sticky='NW', padx=5, pady=5, ipadx=33, ipady=15)
+        self.camera.grid(row=0, column=2, columnspan=1, sticky='NW', padx=5, pady=5, ipadx=5, ipady=15)
         self.space1 = Label(self.camera, text="Further tests needed")
         self.space1['font'] = information
         self.space1.grid(row=0, column=0, sticky='W', padx=5, pady=8)
@@ -206,6 +221,9 @@ class MyWindow:
         self.qe_value.grid(row=4, column=1, columnspan=7, sticky="WE", pady=3)
         
         
+        
+        
+        
     def generate_random_unique_bliking_number(self):
         self.random_unique_value_blink.delete(0, "end")
         self.random_unique_value_blink.insert(0, str(random.choice(list(range(1, int(self.frame_number.get()))))))   
@@ -219,10 +237,10 @@ class MyWindow:
         tmp = []
         self.min_blk.delete(0, "end")
         self.max_blk.delete(0, "end")
-        tmp.append(str(random.choice(list(range(1, int(self.frame_number.get()))))))
-        tmp.append(str(random.choice(list(range(1, int(self.frame_number.get()))))))
-        self.max_blk.insert(0, str(max(tmp)))
+        tmp.append(random.choice(list(range(1, int(self.frame_number.get())))))
+        tmp.append(random.choice(list(range(1, int(self.frame_number.get())))))
         self.min_blk.insert(0, str(min(tmp)))
+        self.max_blk.insert(0, str(max(tmp)))
 
 
     def set_avg_intensity(self):
