@@ -1,0 +1,2 @@
+id 	approximative coordinates (x,y) 	blinking frames 
+0	(478.4, 416.6)	[7, 8, 9, 31]
