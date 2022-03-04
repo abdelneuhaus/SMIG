@@ -329,6 +329,6 @@ class MyWindow:
         
         
 
-window = Tk()
-mywin = MyWindow(window)
-window.mainloop()
+# window = Tk()
+# mywin = MyWindow(window)
+# window.mainloop()
