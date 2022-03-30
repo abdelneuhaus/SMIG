@@ -77,7 +77,7 @@ class MyWindow:
         self.random_unique_blink = Label(self.bliking, text="Value:")
         self.random_unique_blink.grid(row=3, column=1, sticky='W', padx=5, pady=10)
         self.random_unique_value_blink = Entry(self.bliking)
-        self.random_unique_value_blink.insert(0, ' ')
+        self.random_unique_value_blink.insert(0, '')
         self.random_unique_value_blink.grid(row=3, column=2, columnspan=1, sticky="W", pady=10, ipadx=1)
         
         
@@ -101,7 +101,7 @@ class MyWindow:
         # TO DO
         self.check_toggle_random_range_on = BooleanVar()
         self.check_toggle_random_range_on.set(False)
-        self.toggle_random_range_on = Button(self.bliking, text="Generate random range")
+        self.toggle_random_range_on = Button(self.bliking, text="Generate random range", command=self.generate_random_range_on_number)
         self.toggle_random_range_on.grid(row=6, column=0, sticky='W', padx=5, pady=3)
         
         self.check_toggle_value_unique_on = BooleanVar()
@@ -111,7 +111,7 @@ class MyWindow:
         self.random_unique_on = Label(self.bliking, text="Value:")
         self.random_unique_on.grid(row=7, column=1, sticky='W', padx=5, pady=10)
         self.random_unique_value_on = Entry(self.bliking)
-        self.random_unique_value_on.insert(0, ' ')
+        self.random_unique_value_on.insert(0, '')
         self.random_unique_value_on.grid(row=7, column=2, columnspan=1, sticky="W", pady=10, ipadx=1)
         
         
@@ -170,16 +170,16 @@ class MyWindow:
         self.avg_intensity = Label(self.others, text="Molecules Intensity")
         self.avg_intensity['font'] = information
         self.avg_intensity.grid(row=11, column=0, sticky='W', padx=5, pady=10)
-        self.intensity = 100000
+        self.intensity = int(8500/0.165)
         
-        self.avg_int_bool = BooleanVar()
-        self.avg_int_bool.set(False)
-        self.check_avg_int_bool = Checkbutton(self.others, text='Use average intensity (typical DNA-PAINT grey value)', command=self.set_avg_intensity, var=self.avg_int_bool) 
-        self.check_avg_int_bool.grid(row=12, column=0, columnspan=3, sticky="W", pady=3)
-        self.beads_int_bool = BooleanVar()
-        self.beads_int_bool.set(False)
-        self.check_beads_int_bool = Checkbutton(self.others, text='Use beads-like intensity', command=self.set_beads_like_intensity, var=self.beads_int_bool) 
-        self.check_beads_int_bool.grid(row=13, column=0, columnspan=3, sticky="W", pady=0)
+        # self.avg_int_bool = BooleanVar()
+        # self.avg_int_bool.set(False)
+        # self.check_avg_int_bool = Checkbutton(self.others, text='Use average intensity (typical DNA-PAINT grey value)', command=self.set_avg_intensity, var=self.avg_int_bool) 
+        # self.check_avg_int_bool.grid(row=12, column=0, columnspan=3, sticky="W", pady=3)
+        # self.beads_int_bool = BooleanVar()
+        # self.beads_int_bool.set(False)
+        # self.check_beads_int_bool = Checkbutton(self.others, text='Use beads-like intensity', command=self.set_beads_like_intensity, var=self.beads_int_bool) 
+        # self.check_beads_int_bool.grid(row=13, column=0, columnspan=3, sticky="W", pady=0)
 
 
 
@@ -241,14 +241,24 @@ class MyWindow:
         self.max_blk.insert(0, str(max(tmp)))
 
 
-    def set_avg_intensity(self):
-        self.beads_int_bool.set(False)
-        self.intensity = 100000
+    def generate_random_range_on_number(self):
+        tmp = []
+        self.min_on_lgt.delete(0, "end")
+        self.max_on_lgt.delete(0, "end")
+        tmp.append(random.choice(list(range(1, int(self.frame_number.get())))))
+        tmp.append(random.choice(list(range(1, int(self.frame_number.get())))))
+        self.min_on_lgt.insert(0, str(min(tmp)))
+        self.max_on_lgt.insert(0, str(max(tmp)))
+
+
+    # def set_avg_intensity(self):
+    #     self.beads_int_bool.set(False)
+    #     self.intensity = 100
         
         
-    def set_beads_like_intensity(self):
-        self.avg_int_bool.set(False)        
-        self.intensity = 500000
+    # def set_beads_like_intensity(self):
+    #     self.avg_int_bool.set(False)        
+    #     self.intensity = 100
 
 
     def check_delete(self):
@@ -266,8 +276,8 @@ class MyWindow:
         self.random_unique_value_on.delete(0, "end")
         self.random_unique_value_blink.delete(0, "end")
         self.predifined.set(False)
-        self.avg_int_bool.set(False)        
-        self.beads_int_bool.set(False)
+        # self.avg_int_bool.set(False)        
+        # self.beads_int_bool.set(False)
 
 
     def check_predifined_parameters(self):
@@ -278,11 +288,11 @@ class MyWindow:
         self.max_blk.insert(0, "3")
         self.min_on_lgt.insert(0, "1")
         self.max_on_lgt.insert(0, "2")
-        self.baseline_value.insert(0, '750')
-        self.epadu_value.insert(0, '6')
+        self.baseline_value.insert(0, '498')
+        self.epadu_value.insert(0, '12')
         self.qe_value.insert(0, '1')
         self.emgain_value.insert(0, '100')
-        self.avg_int_bool.set(True)        
+        # self.avg_int_bool.set(True)        
         self.delete.set(False)
 
 
@@ -290,13 +300,13 @@ class MyWindow:
         molecules = int(self.mol_number.get())
         frames = int(self.frame_number.get())
         filename = str(self.file_name.get())
-        if (str(self.random_unique_value_blink.get()) != ' '):
+        if (str(self.random_unique_value_blink.get()) != ''):
             blk_min = int(self.random_unique_value_blink.get())
             blk_max = int(self.random_unique_value_blink.get())
         else:
             blk_min = int(self.min_blk.get())
             blk_max = int(self.max_blk.get())
-        if (str(self.random_unique_value_on.get()) != ' '):
+        if (str(self.random_unique_value_on.get()) != ''):
             lgt_min = int(self.random_unique_value_on.get())
             lgt_max = int(self.random_unique_value_on.get())
         else:

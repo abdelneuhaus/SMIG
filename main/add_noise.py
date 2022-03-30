@@ -1,14 +1,11 @@
 import numpy as np
 
 
-def add_noise(image_to_noised, baseline=750, e_per_adu=6, max_value=65535, em_gain=100, qe=1.0):
-    readout_sigma = (em_gain*qe)/e_per_adu
+def add_noise(image_to_noised, baseline=498, e_per_adu=12, max_value=2000, em_gain=100, qe=1.0):
     
-    photons = np.random.RandomState(42).poisson(image_to_noised, size=image_to_noised.shape)
-    electrons = np.random.RandomState(42).normal(scale=readout_sigma, size=image_to_noised.shape)
-    electrons += photons
-    electrons /= e_per_adu
-    electrons += baseline
-    electrons[electrons > max_value] = max_value
-    
-    return np.array(electrons, dtype='uint16')
+    ## BASIC
+    gaussian = np.random.normal(loc=500, scale=100, size=image_to_noised.shape)
+    poisson = np.random.poisson(image_to_noised, size=image_to_noised.shape)
+    gaussian += np.array(poisson, dtype='uint16')
+
+    return np.array(gaussian, dtype='uint16')
