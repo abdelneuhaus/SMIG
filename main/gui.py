@@ -64,7 +64,7 @@ class MyWindow:
         self.max_blk = Entry(self.bliking)
         self.max_blk.grid(row=1, column=4, columnspan=1, sticky="W", pady=10, ipadx=1)
         
-        # TO DO
+
         self.check_toggle_random_range_blink = BooleanVar()
         self.check_toggle_random_range_blink.set(False)
         self.toggle_random_range = Button(self.bliking, text="Generate random range", command=self.generate_random_range_bliking_number)
@@ -98,7 +98,6 @@ class MyWindow:
         self.max_on_lgt = Entry(self.bliking)
         self.max_on_lgt.grid(row=5, column=4, columnspan=7, sticky="W", pady=3)
         
-        # TO DO
         self.check_toggle_random_range_on = BooleanVar()
         self.check_toggle_random_range_on.set(False)
         self.toggle_random_range_on = Button(self.bliking, text="Generate random range", command=self.generate_random_range_on_number)
@@ -117,6 +116,7 @@ class MyWindow:
         
         
         # PERSONALIZE SEQUENCE
+        # TO DO
         self.sequence = LabelFrame(win, text="Sequence of blinks to enter")
         self.sequence['font'] = information
         self.sequence.grid(row=2, column=3, sticky='NW', padx=5, pady=10)
@@ -170,10 +170,7 @@ class MyWindow:
         self.avg_intensity = Label(self.others, text="Molecules Intensity")
         self.avg_intensity['font'] = information
         self.avg_intensity.grid(row=11, column=0, sticky='W', padx=5, pady=10)
-        self.intensity = 8500
-
-
-
+        self.intensity = 11000
 
 
 
@@ -186,13 +183,13 @@ class MyWindow:
         self.space1.grid(row=0, column=0, sticky='W', padx=5, pady=8)
         
         # Background range
-        self.background = Label(self.camera, text=" Background mean value")
+        self.background = Label(self.camera, text=" Background mean")
         self.background.grid(row=1, column=0, sticky='W', padx=5, pady=10)
         self.background_value = Entry(self.camera)
         self.background_value.grid(row=1, column=1, columnspan=7, sticky="WE", pady=3)
 
         # Background sd
-        self.sd_bg = Label(self.camera, text=" Background standard deviation value")
+        self.sd_bg = Label(self.camera, text=" Background sd")
         self.sd_bg.grid(row=2, column=0, sticky='W', padx=5, pady=10)
         self.sd_bg_value = Entry(self.camera)
         self.sd_bg_value.grid(row=2, column=1, columnspan=7, sticky="WE", pady=3)
