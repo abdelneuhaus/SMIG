@@ -170,16 +170,7 @@ class MyWindow:
         self.avg_intensity = Label(self.others, text="Molecules Intensity")
         self.avg_intensity['font'] = information
         self.avg_intensity.grid(row=11, column=0, sticky='W', padx=5, pady=10)
-        self.intensity = int(8500/0.165)
-        
-        # self.avg_int_bool = BooleanVar()
-        # self.avg_int_bool.set(False)
-        # self.check_avg_int_bool = Checkbutton(self.others, text='Use average intensity (typical DNA-PAINT grey value)', command=self.set_avg_intensity, var=self.avg_int_bool) 
-        # self.check_avg_int_bool.grid(row=12, column=0, columnspan=3, sticky="W", pady=3)
-        # self.beads_int_bool = BooleanVar()
-        # self.beads_int_bool.set(False)
-        # self.check_beads_int_bool = Checkbutton(self.others, text='Use beads-like intensity', command=self.set_beads_like_intensity, var=self.beads_int_bool) 
-        # self.check_beads_int_bool.grid(row=13, column=0, columnspan=3, sticky="W", pady=0)
+        self.intensity = 8500
 
 
 
@@ -187,37 +178,26 @@ class MyWindow:
 
 
         ### CAMERA PARAMETERS ###
-        self.camera = LabelFrame(win, text=" CAMERA PARAMETERS ")
+        self.camera = LabelFrame(win, text=" CAMERA SIMULATION ")
         self.camera['font'] = helv36
         self.camera.grid(row=0, column=2, columnspan=1, sticky='NW', padx=5, pady=5, ipadx=5, ipady=15)
-        self.space1 = Label(self.camera, text="Further tests needed")
+        self.space1 = Label(self.camera, text="Background range")
         self.space1['font'] = information
         self.space1.grid(row=0, column=0, sticky='W', padx=5, pady=8)
         
-        # Camera baseline
-        self.baseline = Label(self.camera, text=" Camera baseline")
-        self.baseline.grid(row=1, column=0, sticky='W', padx=5, pady=10)
-        self.baseline_value = Entry(self.camera)
-        self.baseline_value.grid(row=1, column=1, columnspan=7, sticky="WE", pady=3)
+        # Background range
+        self.background = Label(self.camera, text=" Background mean value")
+        self.background.grid(row=1, column=0, sticky='W', padx=5, pady=10)
+        self.background_value = Entry(self.camera)
+        self.background_value.grid(row=1, column=1, columnspan=7, sticky="WE", pady=3)
 
-        # Electrons per ADU
-        self.epadu = Label(self.camera, text=" Electrons per ADU")
-        self.epadu.grid(row=2, column=0, sticky='W', padx=5, pady=10)
-        self.epadu_value = Entry(self.camera)
-        self.epadu_value.grid(row=2, column=1, columnspan=7, sticky="WE", pady=3)
-        
-        # EM Gain
-        self.emgain = Label(self.camera, text=" EM Gain")
-        self.emgain.grid(row=3, column=0, sticky='W', padx=5, pady=10)
-        self.emgain_value = Entry(self.camera)
-        self.emgain_value.grid(row=3, column=1, columnspan=7, sticky="WE", pady=3)
-        
-        # Quantum efficiency
-        self.qe = Label(self.camera, text=" Quantum efficiency")
-        self.qe.grid(row=4, column=0, sticky='W', padx=5, pady=10)
-        self.qe_value = Entry(self.camera)
-        self.qe_value.grid(row=4, column=1, columnspan=7, sticky="WE", pady=3)
-        
+        # Background sd
+        self.sd_bg = Label(self.camera, text=" Background standard deviation value")
+        self.sd_bg.grid(row=2, column=0, sticky='W', padx=5, pady=10)
+        self.sd_bg_value = Entry(self.camera)
+        self.sd_bg_value.grid(row=2, column=1, columnspan=7, sticky="WE", pady=3)
+
+       
         
         
         
@@ -251,16 +231,6 @@ class MyWindow:
         self.max_on_lgt.insert(0, str(max(tmp)))
 
 
-    # def set_avg_intensity(self):
-    #     self.beads_int_bool.set(False)
-    #     self.intensity = 100
-        
-        
-    # def set_beads_like_intensity(self):
-    #     self.avg_int_bool.set(False)        
-    #     self.intensity = 100
-
-
     def check_delete(self):
         self.mol_number.delete(0, "end")
         self.frame_number.delete(0, "end")
@@ -269,15 +239,11 @@ class MyWindow:
         self.max_blk.delete(0, "end")
         self.min_on_lgt.delete(0, "end")
         self.max_on_lgt.delete(0, "end")
-        self.baseline_value.delete(0, 'end')
-        self.emgain_value.delete(0, 'end')
-        self.qe_value.delete(0, 'end')
-        self.epadu_value.delete(0, 'end')
+        self.background_value.delete(0, 'end')
+        self.sd_bg_value.delete(0, 'end')
         self.random_unique_value_on.delete(0, "end")
         self.random_unique_value_blink.delete(0, "end")
         self.predifined.set(False)
-        # self.avg_int_bool.set(False)        
-        # self.beads_int_bool.set(False)
 
 
     def check_predifined_parameters(self):
@@ -288,11 +254,8 @@ class MyWindow:
         self.max_blk.insert(0, "3")
         self.min_on_lgt.insert(0, "1")
         self.max_on_lgt.insert(0, "2")
-        self.baseline_value.insert(0, '498')
-        self.epadu_value.insert(0, '12')
-        self.qe_value.insert(0, '1')
-        self.emgain_value.insert(0, '100')
-        # self.avg_int_bool.set(True)        
+        self.background_value.insert(0, '498')
+        self.sd_bg_value.insert(0, '100')
         self.delete.set(False)
 
 
@@ -312,10 +275,8 @@ class MyWindow:
         else:
             lgt_min = int(self.min_on_lgt.get())
             lgt_max = int(self.max_on_lgt.get())
-        baseline_camera = int(self.baseline_value.get())
-        emgain_cam = int(self.emgain_value.get())
-        qe_cam = int(self.qe_value.get())
-        epadu_cam = int(self.epadu_value.get())
+        bkg_value = int(self.background_value.get())
+        sd_bkg_value = int(self.sd_bg_value.get())
         
         
         generate_stack(frames, molecules, filename+'.tif', 
@@ -327,16 +288,8 @@ class MyWindow:
                        length_max=lgt_max, 
                        blink_min=blk_min, 
                        blink_max=blk_max, 
-                       baseline=baseline_camera,
-                       e_per_adu=epadu_cam, 
-                       max_value=65535, 
-                       em_gain=emgain_cam, 
-                       qe=qe_cam)
+                       background_value=bkg_value,
+                       sd_bckg_value=sd_bkg_value, 
+                       max_value=65535)
         
         self.state_simulation.config(text='Done!')
-        
-        
-
-# window = Tk()
-# mywin = MyWindow(window)
-# window.mainloop()

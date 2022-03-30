@@ -11,7 +11,7 @@ from scipy.ndimage import gaussian_filter
 
 
 def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=60000, x_image=2500, y_image=2500, length_min=1, length_max=3, 
-                                   blink_min=1, blink_max=3, baseline=750, e_per_adu=6, max_value=65535, em_gain=100, qe=1.0):
+                                   blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, max_value=65535):
     points = create_molecules_data(frames, 
                                    nbr_molecules=nb_emitters, 
                                    size_image=x_image, 
@@ -24,6 +24,6 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
             data = generate_one_frame(points, y_image, frame=i)
             gaussian_image = gaussian_filter(data, sigma=5)
             down_image = downsampling(gaussian_image)
-            out = add_noise(down_image, baseline=baseline, e_per_adu=e_per_adu, max_value=max_value, em_gain=em_gain, qe=qe) 
+            out = add_noise(down_image, bckg=background_value, sd=sd_bckg_value) 
             tif.write(out, photometric='minisblack')
             save_data(points, x_image, filename)
