@@ -23,20 +23,20 @@ class MyWindow:
         self.space.grid(row=0, column=0, sticky='W', padx=5, pady=3)
         
         # Molecules number
-        self.mol_label = Label(self.simulation_parameters, text=" Number of molecules")
-        self.mol_label.grid(row=1, column=0, sticky='W', padx=5, pady=10)
-        self.mol_number = Entry(self.simulation_parameters)
-        self.mol_number.grid(row=1, column=1, columnspan=7, sticky="WE", pady=3)
+        self.number_of_mol_text = Label(self.simulation_parameters, text=" Number of molecules")
+        self.number_of_mol_text.grid(row=1, column=0, sticky='W', padx=5, pady=10)
+        self.number_of_mol = Entry(self.simulation_parameters)
+        self.number_of_mol.grid(row=1, column=1, columnspan=7, sticky="WE", pady=3)
 
         # Frames
-        self.frame_label = Label(self.simulation_parameters, text=" Number of frames")
-        self.frame_label.grid(row=2, column=0, sticky='W', padx=5, pady=10)
-        self.frame_number = Entry(self.simulation_parameters)
-        self.frame_number.grid(row=2, column=1, columnspan=10, sticky="WE", pady=3)
+        self.number_of_frames_text = Label(self.simulation_parameters, text=" Number of frames")
+        self.number_of_frames_text.grid(row=2, column=0, sticky='W', padx=5, pady=10)
+        self.number_of_frames = Entry(self.simulation_parameters)
+        self.number_of_frames.grid(row=2, column=1, columnspan=10, sticky="WE", pady=3)
 
         # Filename
-        self.file_label = Label(self.simulation_parameters, text=" Filename")
-        self.file_label.grid(row=3, column=0, sticky='W', padx=5, pady=10)
+        self.filename_text = Label(self.simulation_parameters, text=" Filename")
+        self.filename_text.grid(row=3, column=0, sticky='W', padx=5, pady=10)
         self.file_name = Entry(self.simulation_parameters)
         self.file_name.grid(row=3, column=1, columnspan=10, sticky="WE", pady=3)
         
@@ -51,61 +51,61 @@ class MyWindow:
         
         
         # Number of blinks per molecule
-        self.blink_label = Label(self.bliking, text="Number of blinks per molecule")
-        self.blink_label['font'] = information
-        self.blink_label.grid(row=1, column=0, sticky='W', padx=5, pady=10)
+        self.number_of_blink_text = Label(self.bliking, text="Number of blinks per molecule")
+        self.number_of_blink_text['font'] = information
+        self.number_of_blink_text.grid(row=1, column=0, sticky='W', padx=5, pady=10)
         
-        self.min_blink = Label(self.bliking, text="Min.")
-        self.min_blink.grid(row=1, column=1, sticky='W', padx=5, pady=0)
-        self.min_blk = Entry(self.bliking)
-        self.min_blk.grid(row=1, column=2, columnspan=1, sticky="W", pady=3, ipadx=0)
-        self.max_blink = Label(self.bliking, text="Max.")
-        self.max_blink.grid(row=1, column=3, sticky='W', padx=5, pady=10)
-        self.max_blk = Entry(self.bliking)
-        self.max_blk.grid(row=1, column=4, columnspan=1, sticky="W", pady=10, ipadx=1)
+        self.minimum_value_blink_text = Label(self.bliking, text="Min.")
+        self.minimum_value_blink_text.grid(row=1, column=1, sticky='W', padx=5, pady=0)
+        self.minimum_value_blink = Entry(self.bliking)
+        self.minimum_value_blink.grid(row=1, column=2, columnspan=1, sticky="W", pady=3, ipadx=0)
+        self.minimum_value_blink_text = Label(self.bliking, text="Max.")
+        self.minimum_value_blink_text.grid(row=1, column=3, sticky='W', padx=5, pady=10)
+        self.minimum_value_blink = Entry(self.bliking)
+        self.minimum_value_blink.grid(row=1, column=4, columnspan=1, sticky="W", pady=10, ipadx=1)
         
 
-        self.check_toggle_random_range_blink = BooleanVar()
-        self.check_toggle_random_range_blink.set(False)
-        self.toggle_random_range = Button(self.bliking, text="Generate random range", command=self.generate_random_range_bliking_number)
-        self.toggle_random_range.grid(row=2, column=0, sticky='W', padx=5, pady=3)
+        self.state_random_range_blink = BooleanVar()
+        self.state_random_range_blink.set(False)
+        self.button_random_range_blink = Button(self.bliking, text="Generate random range", command=self.generate_random_range_bliking_number)
+        self.button_random_range_blink.grid(row=2, column=0, sticky='W', padx=5, pady=3)
         
-        self.check_toggle_unique_value_blink = BooleanVar()
-        self.check_toggle_unique_value_blink.set(False)
-        self.toggle_random_value_blink = Button(self.bliking, text="Generate random unique value", command=self.generate_random_unique_bliking_number)#, var=self.check_toggle_random_value_blink)
-        self.toggle_random_value_blink.grid(row=3, column=0, sticky='W', padx=5, pady=3)
-        self.random_unique_blink = Label(self.bliking, text="Value:")
-        self.random_unique_blink.grid(row=3, column=1, sticky='W', padx=5, pady=10)
-        self.random_unique_value_blink = Entry(self.bliking)
-        self.random_unique_value_blink.insert(0, '')
-        self.random_unique_value_blink.grid(row=3, column=2, columnspan=1, sticky="W", pady=10, ipadx=1)
+        self.state_random_value_blink = BooleanVar()
+        self.state_random_value_blink.set(False)
+        self.button_random_value_blink = Button(self.bliking, text="Generate random unique value", command=self.generate_random_unique_bliking_number)#, var=self.check_button_random_value_blink)
+        self.button_random_value_blink.grid(row=3, column=0, sticky='W', padx=5, pady=3)
+        self.random_unique_blink_text = Label(self.bliking, text="Value:")
+        self.random_unique_blink_text.grid(row=3, column=1, sticky='W', padx=5, pady=10)
+        self.random_unique_blink_value = Entry(self.bliking)
+        self.random_unique_blink_value.insert(0, '')
+        self.random_unique_blink_value.grid(row=3, column=2, columnspan=1, sticky="W", pady=10, ipadx=1)
         
         
     
         self.space5 = Label(self.bliking, text="")
         self.space5.grid(row=4, column=0, sticky='W', padx=5, pady=10)
         # Range for on time length
-        self.on_label = Label(self.bliking, text="On time duration (in frame number)")
-        self.on_label['font'] = information
-        self.on_label.grid(row=5, column=0, sticky='W', padx=5, pady=10)
+        self.on_time_text = Label(self.bliking, text="On time duration (in frame number)")
+        self.on_time_text['font'] = information
+        self.on_time_text.grid(row=5, column=0, sticky='W', padx=5, pady=10)
         
-        self.min_on= Label(self.bliking, text="Min.")
-        self.min_on.grid(row=5, column=1, sticky='W', padx=5, pady=0)
-        self.min_on_lgt = Entry(self.bliking)
-        self.min_on_lgt.grid(row=5, column=2, columnspan=7, sticky="W", pady=3)
-        self.max_on = Label(self.bliking, text="Max.")
-        self.max_on.grid(row=5, column=3, sticky='W', padx=5, pady=10)
-        self.max_on_lgt = Entry(self.bliking)
-        self.max_on_lgt.grid(row=5, column=4, columnspan=7, sticky="W", pady=3)
+        self.min_on_time_text= Label(self.bliking, text="Min.")
+        self.min_on_time_text.grid(row=5, column=1, sticky='W', padx=5, pady=0)
+        self.min_on_time_value = Entry(self.bliking)
+        self.min_on_time_value.grid(row=5, column=2, columnspan=7, sticky="W", pady=3)
+        self.max_on_time_text = Label(self.bliking, text="Max.")
+        self.max_on_time_text.grid(row=5, column=3, sticky='W', padx=5, pady=10)
+        self.max_on_time_value = Entry(self.bliking)
+        self.max_on_time_value.grid(row=5, column=4, columnspan=7, sticky="W", pady=3)
         
-        self.check_toggle_random_range_on = BooleanVar()
-        self.check_toggle_random_range_on.set(False)
-        self.toggle_random_range_on = Button(self.bliking, text="Generate random range", command=self.generate_random_range_on_number)
-        self.toggle_random_range_on.grid(row=6, column=0, sticky='W', padx=5, pady=3)
+        self.check_button_random_range_blink_on = BooleanVar()
+        self.check_button_random_range_blink_on.set(False)
+        self.button_random_range_blink_on = Button(self.bliking, text="Generate random range", command=self.generate_random_range_on_number)
+        self.button_random_range_blink_on.grid(row=6, column=0, sticky='W', padx=5, pady=3)
         
         self.check_toggle_value_unique_on = BooleanVar()
         self.check_toggle_value_unique_on.set(False)
-        self.toggle_unique_value_on = Button(self.bliking, text="Generate random unique value", command=self.generate_random_unique_on_number)#, var=self.check_toggle_random_range_on)
+        self.toggle_unique_value_on = Button(self.bliking, text="Generate random unique value", command=self.generate_random_unique_on_number)#, var=self.check_button_random_range_blink_on)
         self.toggle_unique_value_on.grid(row=7, column=0, sticky='W', padx=5, pady=3)
         self.random_unique_on = Label(self.bliking, text="Value:")
         self.random_unique_on.grid(row=7, column=1, sticky='W', padx=5, pady=10)
@@ -167,10 +167,12 @@ class MyWindow:
         
         self.ssss = Label(self.others, text=" ")
         self.ssss.grid(row=10, column=0, sticky='W', padx=5, pady=10)
-        self.avg_intensity = Label(self.others, text="Molecules Intensity")
-        self.avg_intensity['font'] = information
+        self.avg_intensity = Label(self.others, text="Molecules Integrated Intensity")
         self.avg_intensity.grid(row=11, column=0, sticky='W', padx=5, pady=10)
-        self.intensity = 11000
+        
+        self.intensity = Entry(self.others)
+        self.intensity.grid(row=11, column=1, sticky="WE", pady=3)
+        # self.intensity = 11000
 
 
 
@@ -183,13 +185,13 @@ class MyWindow:
         self.space1.grid(row=0, column=0, sticky='W', padx=5, pady=8)
         
         # Background range
-        self.background = Label(self.camera, text=" Background mean")
+        self.background = Label(self.camera, text=" Background mean value")
         self.background.grid(row=1, column=0, sticky='W', padx=5, pady=10)
         self.background_value = Entry(self.camera)
         self.background_value.grid(row=1, column=1, columnspan=7, sticky="WE", pady=3)
 
         # Background sd
-        self.sd_bg = Label(self.camera, text=" Background sd")
+        self.sd_bg = Label(self.camera, text=" Standard deviation")
         self.sd_bg.grid(row=2, column=0, sticky='W', padx=5, pady=10)
         self.sd_bg_value = Entry(self.camera)
         self.sd_bg_value.grid(row=2, column=1, columnspan=7, sticky="WE", pady=3)
@@ -200,85 +202,87 @@ class MyWindow:
         
         
     def generate_random_unique_bliking_number(self):
-        self.random_unique_value_blink.delete(0, "end")
-        self.random_unique_value_blink.insert(0, str(random.choice(list(range(1, int(self.frame_number.get()))))))   
+        self.random_unique_blink_value.delete(0, "end")
+        self.random_unique_blink_value.insert(0, str(random.choice(list(range(1, int(self.number_of_frames.get()))))))   
         
     def generate_random_unique_on_number(self):
         self.random_unique_value_on.delete(0, "end")
-        self.random_unique_value_on.insert(0, str(random.choice(list(range(1, int(self.frame_number.get()))))))
+        self.random_unique_value_on.insert(0, str(random.choice(list(range(1, int(self.number_of_frames.get()))))))
         
 
     def generate_random_range_bliking_number(self):
         tmp = []
-        self.min_blk.delete(0, "end")
-        self.max_blk.delete(0, "end")
-        tmp.append(random.choice(list(range(1, int(self.frame_number.get())))))
-        tmp.append(random.choice(list(range(1, int(self.frame_number.get())))))
-        self.min_blk.insert(0, str(min(tmp)))
-        self.max_blk.insert(0, str(max(tmp)))
+        self.minimum_value_blink.delete(0, "end")
+        self.minimum_value_blink.delete(0, "end")
+        tmp.append(random.choice(list(range(1, int(self.number_of_frames.get())))))
+        tmp.append(random.choice(list(range(1, int(self.number_of_frames.get())))))
+        self.minimum_value_blink.insert(0, str(min(tmp)))
+        self.minimum_value_blink.insert(0, str(max(tmp)))
 
 
     def generate_random_range_on_number(self):
         tmp = []
-        self.min_on_lgt.delete(0, "end")
-        self.max_on_lgt.delete(0, "end")
-        tmp.append(random.choice(list(range(1, int(self.frame_number.get())))))
-        tmp.append(random.choice(list(range(1, int(self.frame_number.get())))))
-        self.min_on_lgt.insert(0, str(min(tmp)))
-        self.max_on_lgt.insert(0, str(max(tmp)))
+        self.min_on_time_value.delete(0, "end")
+        self.max_on_time_value.delete(0, "end")
+        tmp.append(random.choice(list(range(1, int(self.number_of_frames.get())))))
+        tmp.append(random.choice(list(range(1, int(self.number_of_frames.get())))))
+        self.min_on_time_value.insert(0, str(min(tmp)))
+        self.max_on_time_value.insert(0, str(max(tmp)))
 
 
     def check_delete(self):
-        self.mol_number.delete(0, "end")
-        self.frame_number.delete(0, "end")
+        self.number_of_mol.delete(0, "end")
+        self.number_of_frames.delete(0, "end")
         self.file_name.delete(0, "end")
-        self.min_blk.delete(0, "end")
-        self.max_blk.delete(0, "end")
-        self.min_on_lgt.delete(0, "end")
-        self.max_on_lgt.delete(0, "end")
+        self.minimum_value_blink.delete(0, "end")
+        self.minimum_value_blink.delete(0, "end")
+        self.min_on_time_value.delete(0, "end")
+        self.max_on_time_value.delete(0, "end")
         self.background_value.delete(0, 'end')
         self.sd_bg_value.delete(0, 'end')
         self.random_unique_value_on.delete(0, "end")
-        self.random_unique_value_blink.delete(0, "end")
+        self.random_unique_blink_value.delete(0, "end")
+        self.intensity.delete(0, "end")
         self.predifined.set(False)
 
 
     def check_predifined_parameters(self):
-        self.mol_number.insert(0, "100")
-        self.frame_number.insert(0, "30")
+        self.number_of_mol.insert(0, "100")
+        self.number_of_frames.insert(0, "30")
         self.file_name.insert(0, "sim01")
-        self.min_blk.insert(0, "2")
-        self.max_blk.insert(0, "3")
-        self.min_on_lgt.insert(0, "1")
-        self.max_on_lgt.insert(0, "2")
+        self.minimum_value_blink.insert(0, "2")
+        self.minimum_value_blink.insert(0, "3")
+        self.min_on_time_value.insert(0, "1")
+        self.max_on_time_value.insert(0, "2")
         self.background_value.insert(0, '498')
         self.sd_bg_value.insert(0, '100')
+        self.intensity.insert(0, '11000')
         self.delete.set(False)
 
 
     def set(self):
-        molecules = int(self.mol_number.get())
-        frames = int(self.frame_number.get())
+        molecules = int(self.number_of_mol.get())
+        frames = int(self.number_of_frames.get())
         filename = str(self.file_name.get())
-        if (str(self.random_unique_value_blink.get()) != ''):
-            blk_min = int(self.random_unique_value_blink.get())
-            blk_max = int(self.random_unique_value_blink.get())
+        if (str(self.random_unique_blink_value.get()) != ''):
+            blk_min = int(self.random_unique_blink_value.get())
+            blk_max = int(self.random_unique_blink_value.get())
         else:
-            blk_min = int(self.min_blk.get())
-            blk_max = int(self.max_blk.get())
+            blk_min = int(self.minimum_value_blink.get())
+            blk_max = int(self.minimum_value_blink.get())
         if (str(self.random_unique_value_on.get()) != ''):
             lgt_min = int(self.random_unique_value_on.get())
             lgt_max = int(self.random_unique_value_on.get())
         else:
-            lgt_min = int(self.min_on_lgt.get())
-            lgt_max = int(self.max_on_lgt.get())
+            lgt_min = int(self.min_on_time_value.get())
+            lgt_max = int(self.max_on_time_value.get())
         bkg_value = int(self.background_value.get())
         sd_bkg_value = int(self.sd_bg_value.get())
         
         
         generate_stack(frames, molecules, filename+'.tif', 
                        randomize=True, 
-                       intensity=self.intensity, 
+                       intensity=int(self.intensity.get()), 
                        x_image=2500, 
                        y_image=2500,
                        length_min=lgt_min, 
