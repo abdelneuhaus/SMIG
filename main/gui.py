@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import font
 from generate_stack import *
+from convert_str_to_int import convert_str_to_int
 
 import random
 
@@ -61,8 +62,8 @@ class MyWindow:
         self.minimum_value_blink.grid(row=1, column=2, columnspan=1, sticky="W", pady=3, ipadx=0)
         self.minimum_value_blink_text = Label(self.bliking, text="Max.")
         self.minimum_value_blink_text.grid(row=1, column=3, sticky='W', padx=5, pady=10)
-        self.minimum_value_blink = Entry(self.bliking)
-        self.minimum_value_blink.grid(row=1, column=4, columnspan=1, sticky="W", pady=10, ipadx=1)
+        self.maximum_value_blink = Entry(self.bliking)
+        self.maximum_value_blink.grid(row=1, column=4, columnspan=1, sticky="W", pady=10, ipadx=1)
         
 
         self.state_random_range_blink = BooleanVar()
@@ -115,8 +116,7 @@ class MyWindow:
         
         
         
-        # PERSONALIZE SEQUENCE
-        # TO DO
+        # OWN BLINKING SEQUENCE
         self.sequence = LabelFrame(win, text="Sequence of blinks to enter")
         self.sequence['font'] = information
         self.sequence.grid(row=2, column=3, sticky='NW', padx=5, pady=10)
@@ -127,7 +127,7 @@ class MyWindow:
         
         self.check_use_perso = BooleanVar()
         self.check_use_perso.set(False)
-        self.use_perso = Button(self.sequence, text="Validate", command=None)
+        self.use_perso = Button(self.sequence, text="Validate", command=self.use_own_sequence)
         self.use_perso.grid(row=3, column=0, sticky='WE', padx=5, pady=3)
         
         
@@ -172,8 +172,7 @@ class MyWindow:
         
         self.intensity = Entry(self.others)
         self.intensity.grid(row=11, column=1, sticky="WE", pady=3)
-        # self.intensity = 11000
-
+        
 
 
         ### CAMERA PARAMETERS ###
@@ -198,8 +197,9 @@ class MyWindow:
 
        
         
-        
-        
+    def use_own_sequence(self):
+        self.check_use_perso.set(True)
+
         
     def generate_random_unique_bliking_number(self):
         self.random_unique_blink_value.delete(0, "end")
@@ -216,8 +216,8 @@ class MyWindow:
         self.minimum_value_blink.delete(0, "end")
         tmp.append(random.choice(list(range(1, int(self.number_of_frames.get())))))
         tmp.append(random.choice(list(range(1, int(self.number_of_frames.get())))))
-        self.minimum_value_blink.insert(0, str(min(tmp)))
-        self.minimum_value_blink.insert(0, str(max(tmp)))
+        self.maximum_value_blink.insert(0, str(min(tmp)))
+        self.maximum_value_blink.insert(0, str(max(tmp)))
 
 
     def generate_random_range_on_number(self):
@@ -235,7 +235,7 @@ class MyWindow:
         self.number_of_frames.delete(0, "end")
         self.file_name.delete(0, "end")
         self.minimum_value_blink.delete(0, "end")
-        self.minimum_value_blink.delete(0, "end")
+        self.maximum_value_blink.delete(0, "end")
         self.min_on_time_value.delete(0, "end")
         self.max_on_time_value.delete(0, "end")
         self.background_value.delete(0, 'end')
@@ -243,7 +243,11 @@ class MyWindow:
         self.random_unique_value_on.delete(0, "end")
         self.random_unique_blink_value.delete(0, "end")
         self.intensity.delete(0, "end")
+        self.text.delete(1.0,END)
+        self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2, 3, 4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
         self.predifined.set(False)
+        self.check_use_perso.set(False)
+
 
 
     def check_predifined_parameters(self):
@@ -251,7 +255,7 @@ class MyWindow:
         self.number_of_frames.insert(0, "30")
         self.file_name.insert(0, "sim01")
         self.minimum_value_blink.insert(0, "2")
-        self.minimum_value_blink.insert(0, "3")
+        self.maximum_value_blink.insert(0, "3")
         self.min_on_time_value.insert(0, "1")
         self.max_on_time_value.insert(0, "2")
         self.background_value.insert(0, '498')
@@ -264,12 +268,19 @@ class MyWindow:
         molecules = int(self.number_of_mol.get())
         frames = int(self.number_of_frames.get())
         filename = str(self.file_name.get())
+        
         if (str(self.random_unique_blink_value.get()) != ''):
             blk_min = int(self.random_unique_blink_value.get())
             blk_max = int(self.random_unique_blink_value.get())
         else:
             blk_min = int(self.minimum_value_blink.get())
-            blk_max = int(self.minimum_value_blink.get())
+            blk_max = int(self.maximum_value_blink.get())
+            
+        if self.check_use_perso.get() == False:
+            blink_seq = None
+        else:
+            blink_seq = convert_str_to_int(self.text.get(1.0, "end-1c"))
+            
         if (str(self.random_unique_value_on.get()) != ''):
             lgt_min = int(self.random_unique_value_on.get())
             lgt_max = int(self.random_unique_value_on.get())
@@ -291,6 +302,6 @@ class MyWindow:
                        blink_max=blk_max, 
                        background_value=bkg_value,
                        sd_bckg_value=sd_bkg_value, 
-                       max_value=65535)
+                       blinking_seq=blink_seq)
         
         self.state_simulation.config(text='Done!')
