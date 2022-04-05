@@ -3,11 +3,9 @@ from create_molecules_data import create_molecules_data
 from downsampling import downsampling
 from add_noise import add_noise
 from save_data import save_data
+
 from scipy.ndimage import gaussian_filter
-
 import tifffile
-import numpy as np
-
 
 
 def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=60000, x_image=2500, y_image=2500, length_min=1, length_max=3, 

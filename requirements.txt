@@ -1,0 +1,7 @@
+numpy
+tifffile
+re
+xarray
+random
+scipy
+tkinter

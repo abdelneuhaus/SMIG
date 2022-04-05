@@ -1,0 +1,13 @@
+camera pixel size : 160 nm
+image size : 500x500
+
+pixel density : 160*160 = 25600 nm² = 0.0256 µm²
+total image area : 500*500*0.0256 = 6400 µm²
+
+Number of molecules regarding density used:
+
+0.1 mol/µm²  -> 640 molecules
+0.25 mol/µm² -> 1600 molecules
+0.5 mol/µm²  -> 3200 molecules
+0.75 mol/µm² -> 4800 molecules
+1 mol/µm²    -> 6400 molecules
