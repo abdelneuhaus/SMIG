@@ -3,6 +3,7 @@ from create_molecules_data import create_molecules_data
 from downsampling import downsampling
 from add_noise import add_noise
 from save_data import save_data
+from save_parameters import save_parameters
 
 from scipy.ndimage import gaussian_filter
 import tifffile
@@ -25,3 +26,4 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
             out = add_noise(down_image, bckg=background_value, sd=sd_bckg_value)
             tif.write(out, photometric='minisblack')
             save_data(points, x_image, filename)
+        save_parameters(filename, frames, nb_emitters, intensity, length_min, length_max, blink_min, blink_max, background_value, sd_bckg_value, blinking_seq)
