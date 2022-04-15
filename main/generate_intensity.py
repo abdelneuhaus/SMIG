@@ -1,5 +1,4 @@
-import random
+import numpy as np
 
-
-def generate_intensity(value=9000):
-    return random.sample(range(value, value+5), 1)[0]
+def generate_intensity(value=9000, sd=0):
+    return int(np.random.normal(loc=value, scale=sd))

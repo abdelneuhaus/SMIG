@@ -11,7 +11,7 @@ class MyWindow:
     def __init__(self, win):
         
         win.title('Single Molecule Image Generator')
-        helv36 = font.Font(size=12, weight='bold')
+        helv36 = font.Font(size=11, weight='bold')
         information = font.Font(size=10, slant="italic")
         
         
@@ -169,17 +169,21 @@ class MyWindow:
         self.ssss.grid(row=10, column=0, sticky='W', padx=5, pady=10)
         self.avg_intensity = Label(self.others, text="Molecules Integrated Intensity")
         self.avg_intensity.grid(row=11, column=0, sticky='W', padx=5, pady=10)
-        
         self.intensity = Entry(self.others)
         self.intensity.grid(row=11, column=1, sticky="WE", pady=3)
         
+        self.sd_avg_intensity = Label(self.others, text="Integrated Intensity s.d.")
+        self.sd_avg_intensity.grid(row=12, column=0, sticky='W', padx=5, pady=10)
+        self.sd_intensity = Entry(self.others)
+        self.sd_intensity.grid(row=12, column=1, sticky="WE", pady=3)
+
 
 
         ### CAMERA PARAMETERS ###
         self.camera = LabelFrame(win, text=" CAMERA SIMULATION ")
         self.camera['font'] = helv36
         self.camera.grid(row=0, column=2, columnspan=1, sticky='NW', padx=5, pady=5, ipadx=5, ipady=15)
-        self.space1 = Label(self.camera, text="Background range")
+        self.space1 = Label(self.camera, text="Background")
         self.space1['font'] = information
         self.space1.grid(row=0, column=0, sticky='W', padx=5, pady=8)
         
@@ -243,6 +247,7 @@ class MyWindow:
         self.random_unique_value_on.delete(0, "end")
         self.random_unique_blink_value.delete(0, "end")
         self.intensity.delete(0, "end")
+        self.sd_intensity.delete(0, "end")
         self.text.delete(1.0,END)
         self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2, 3, 4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
         self.predifined.set(False)
@@ -261,6 +266,7 @@ class MyWindow:
         self.background_value.insert(0, '498')
         self.sd_bg_value.insert(0, '100')
         self.intensity.insert(0, '11000')
+        self.sd_intensity.insert(0,'0')
         self.delete.set(False)
 
 
@@ -293,7 +299,8 @@ class MyWindow:
         
         generate_stack(frames, molecules, filename+'.tif', 
                        randomize=True, 
-                       intensity=int(self.intensity.get()), 
+                       intensity=int(self.intensity.get()),
+                       ii_sd=int(self.sd_intensity.get()),
                        x_image=2500, 
                        y_image=2500,
                        length_min=lgt_min, 
