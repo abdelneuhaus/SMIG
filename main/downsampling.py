@@ -1,6 +1,4 @@
-import xarray as xr
 import numpy as np
-
 
 def downsampling(big_image, downsampling_factor=5):
     b = big_image.shape[0]//downsampling_factor
