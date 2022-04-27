@@ -19,7 +19,7 @@ class MyWindow:
         ### SIMULATIONS PARAMETERS ###
         self.simulation_parameters = LabelFrame(win, text=" SIMULATION PARAMETERS ")
         self.simulation_parameters['font'] = helv36
-        self.simulation_parameters.grid(row=0, columnspan=1, sticky='NW', padx=8, pady=5, ipady=40 ,ipadx=8)
+        self.simulation_parameters.grid(row=0, columnspan=1, sticky='NW', padx=8, pady=5, ipady=15, ipadx=8)
         self.space = Label(self.simulation_parameters, text="")
         self.space.grid(row=0, column=0, sticky='W', padx=5, pady=3)
         
@@ -41,6 +41,13 @@ class MyWindow:
         self.file_name = Entry(self.simulation_parameters)
         self.file_name.grid(row=3, column=1, columnspan=10, sticky="WE", pady=3)
         
+        
+        # Edge size
+        self.edge_text = Label(self.simulation_parameters, text=" Edge added size")
+        self.edge_text.grid(row=4, column=0, sticky='W', padx=5, pady=10)
+        self.edge = Entry(self.simulation_parameters)
+        self.edge.grid(row=4, column=1, columnspan=10, sticky="WE", pady=0)
+
 
 
         ### BLIKING ###
@@ -238,6 +245,7 @@ class MyWindow:
         self.number_of_mol.delete(0, "end")
         self.number_of_frames.delete(0, "end")
         self.file_name.delete(0, "end")
+        self.edge.delete(0, "end")
         self.minimum_value_blink.delete(0, "end")
         self.maximum_value_blink.delete(0, "end")
         self.min_on_time_value.delete(0, "end")
@@ -259,6 +267,7 @@ class MyWindow:
         self.number_of_mol.insert(0, "100")
         self.number_of_frames.insert(0, "30")
         self.file_name.insert(0, "sim01")
+        self.edge.insert(0, "0")
         self.minimum_value_blink.insert(0, "2")
         self.maximum_value_blink.insert(0, "3")
         self.min_on_time_value.insert(0, "1")
@@ -274,6 +283,7 @@ class MyWindow:
         molecules = int(self.number_of_mol.get())
         frames = int(self.number_of_frames.get())
         filename = str(self.file_name.get())
+        edge = int(self.edge.get())
         
         if (str(self.random_unique_blink_value.get()) != ''):
             blk_min = int(self.random_unique_blink_value.get())
@@ -309,6 +319,7 @@ class MyWindow:
                        blink_max=blk_max, 
                        background_value=bkg_value,
                        sd_bckg_value=sd_bkg_value, 
-                       blinking_seq=blink_seq)
+                       blinking_seq=blink_seq,
+                       edge=edge)
         
         self.state_simulation.config(text='Done!')

@@ -10,7 +10,7 @@ import tifffile
 
 
 def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=60000, ii_sd=0, x_image=2500, y_image=2500, length_min=1, length_max=3, 
-                                   blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, blinking_seq=None):
+                                   blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, blinking_seq=None, edge=0):
     points = create_molecules_data(frames, 
                                    nbr_molecules=nb_emitters, 
                                    size_image=x_image, 
@@ -18,7 +18,7 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
                                    value=intensity,
                                    ii_sd=ii_sd, 
                                    off_length_min=length_min, off_length_max=length_max, 
-                                   number_blink_min=blink_min, number_blink_max=blink_max, own_blink=blinking_seq)
+                                   number_blink_min=blink_min, number_blink_max=blink_max, own_blink=blinking_seq, edge=edge)
     with tifffile.TiffWriter(filename) as tif:
         for i in range(frames):
             data = generate_one_frame(points, y_image, frame=i)
@@ -27,4 +27,4 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
             out = add_noise(down_image, bckg=background_value, sd=sd_bckg_value)
             tif.write(out, photometric='minisblack')
             save_data(points, x_image, filename)
-        save_parameters(filename, frames, nb_emitters, intensity, length_min, length_max, blink_min, blink_max, background_value, sd_bckg_value, blinking_seq)
+        save_parameters(filename, frames, nb_emitters, intensity, length_min, length_max, blink_min, blink_max, background_value, sd_bckg_value, blinking_seq, edge)

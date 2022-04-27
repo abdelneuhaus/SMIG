@@ -1,5 +1,8 @@
-def save_parameters(filename, frames, nb_emitters, intensity, length_min, length_max, blink_min, blink_max, background_value, sd_bckg_value, blinking_seq):
+from calculate_molecules_density import calculate_molecules_density
+
+def save_parameters(filename, frames, nb_emitters, intensity, length_min, length_max, blink_min, blink_max, background_value, sd_bckg_value, blinking_seq, edge):
     filename = filename.replace('.tif','')
+    densities = calculate_molecules_density(image_size=500, edge=edge)
     with open(str(filename)+'_parameters.txt', 'w') as f:
         f.write('Number of frames: '+ str(frames))
         f.write('\n')
@@ -14,3 +17,14 @@ def save_parameters(filename, frames, nb_emitters, intensity, length_min, length
         f.write('Number of blinks: ['+ str(blink_min)+', '+str(blink_max)+']')
         f.write('\n')
         f.write('Manual blinking sequence (if used): '+str(blinking_seq))
+        f.write('\n')
+        f.write('### DENSITY ###\n')
+        f.write('Number of molecules for density of 0.1: '+str(densities[0]))
+        f.write('\n')
+        f.write('Number of molecules for density of 0.25: '+str(densities[1]))
+        f.write('\n')
+        f.write('Number of molecules for density of 0.5: '+str(densities[2]))
+        f.write('\n')
+        f.write('Number of molecules for density of 0.75: '+str(densities[3]))
+        f.write('\n')
+        f.write('Number of molecules for density of 1: '+str(densities[4]))        
