@@ -29,6 +29,7 @@ class MyWindow:
         self.number_of_mol = Entry(self.simulation_parameters)
         self.number_of_mol.grid(row=1, column=1, columnspan=7, sticky="WE", pady=3)
 
+
         # Frames
         self.number_of_frames_text = Label(self.simulation_parameters, text=" Number of frames")
         self.number_of_frames_text.grid(row=2, column=0, sticky='W', padx=5, pady=10)
