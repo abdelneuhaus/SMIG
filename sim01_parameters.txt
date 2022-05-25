@@ -1,0 +1,13 @@
+Number of frames: 30
+Numbers of emitters: 100
+Integrated Intensity: 11000
+Background value: 498, sd: 100
+ON duration: [1, 2]
+Number of blinks: [2, 3]
+Manual blinking sequence (if used): None
+### DENSITY ###
+Number of molecules for density of 0.1: 64
+Number of molecules for density of 0.25: 400
+Number of molecules for density of 0.5: 1600
+Number of molecules for density of 0.75: 3600
+Number of molecules for density of 1: 6400
