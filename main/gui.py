@@ -36,19 +36,18 @@ class MyWindow:
         # ------- IMAGES PARAMETERS TAB -------
         self.predifined = BooleanVar()
         self.predifined.set(False)
-        self.check_predifined = Button(tab1, text='Use predifined parameters', command=self.check_predifined_parameters, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.check_predifined = Button(tab1, text='Use predifined parameters', command=self.check_predifined_parameters, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.check_predifined.grid(row=5, column=0, columnspan=7, sticky="WE", pady=3, padx=5)
 
         self.delete = BooleanVar()
         self.delete.set(False)
-        self.delete_check = Button(tab1, text='Delete all settings', command=self.check_delete, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.delete_check = Button(tab1, text='Delete all settings', command=self.check_delete, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.delete_check.grid(row=6, column=0, columnspan=7, sticky="WE", pady=3, ipadx=1, padx=5)
-
 
         # Frames
         self.number_of_frames_text = Label(tab1, text=" Number of frames", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.number_of_frames_text.grid(row=1, column=0, sticky='W', padx=5, pady=10)
-        self.number_of_frames = Entry(tab1, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.number_of_frames = Entry(tab1, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
         self.number_of_frames.grid(row=1, column=1, columnspan=10, sticky="WE", pady=3)
 
         # Filename
@@ -69,31 +68,41 @@ class MyWindow:
         # Molecules number
         self.number_of_mol_text = Label(tab1bis, text="Number of molecules ", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.number_of_mol_text.grid(row=0, column=0, sticky='W', padx=5, pady=10)
-        self.number_of_mol = Entry(tab1bis, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
-        self.number_of_mol.grid(row=0, column=1, columnspan=7, sticky="WE", pady=3)
+        self.number_of_mol = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.number_of_mol.grid(row=0, column=1, sticky="WE", pady=3)
 
         self.avg_intensity = Label(tab1bis, text="Molecules Integrated Intensity", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.avg_intensity.grid(row=1, column=0, sticky='W', padx=5, pady=10)
-        self.intensity = Entry(tab1bis, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.intensity = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
         self.intensity.grid(row=1, column=1, sticky="WE", pady=3)
         
         self.sd_avg_intensity = Label(tab1bis, text="Integrated Intensity s.d.", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.sd_avg_intensity.grid(row=2, column=0, sticky='W', padx=5, pady=10)
-        self.sd_intensity = Entry(tab1bis, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.sd_intensity = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
         self.sd_intensity.grid(row=2, column=1, sticky="WE", pady=3)
-
 
         # Background range
         self.background = Label(tab1bis, text="Background mean value", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.background.grid(row=3, column=0, sticky='W', padx=5, pady=10)
-        self.background_value = Entry(tab1bis, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
-        self.background_value.grid(row=3, column=1, columnspan=7, sticky="WE", pady=3)
+        self.background_value = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.background_value.grid(row=3, column=1, sticky="WE", pady=3)
 
         # Background sd
         self.sd_bg = Label(tab1bis, text="Background s.d.", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.sd_bg.grid(row=4, column=0, sticky='W', padx=5, pady=10)
-        self.sd_bg_value = Entry(tab1bis, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
-        self.sd_bg_value.grid(row=4, column=1, columnspan=7, sticky="WE", pady=3)
+        self.sd_bg_value = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.sd_bg_value.grid(row=4, column=1, sticky="WE", pady=3)
+
+        # Density
+        self.density_text = Label(tab1bis, text='Density', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.density_text.grid(row=5, column=0, sticky='W', padx=5, pady=3)
+        self.density = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.density.grid(row=5, column=1, columnspan=1, sticky="W", pady=10, ipadx=1)
+        self.use_density = BooleanVar()
+        self.use_density.set(False)
+        self.checkme = Checkbutton(tab1bis, text='Use density', variable=self.use_density, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
+        self.checkme.grid(row=5, column=2, sticky='W', padx=10, pady=3)
+
 
 
         # ------- BLIKING TAB -------
@@ -109,16 +118,15 @@ class MyWindow:
         self.minimum_value_blink_text.grid(row=1, column=3, sticky='W', padx=5, pady=10)
         self.maximum_value_blink = Entry(tab2, width=5, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
         self.maximum_value_blink.grid(row=1, column=4, columnspan=1, sticky="W", pady=10, ipadx=1)
-
+        
         self.state_random_range_blink = BooleanVar()
         self.state_random_range_blink.set(False)
-        self.button_random_range_blink = Button(tab2, text="Generate random range", command=self.generate_random_range_bliking_number, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.button_random_range_blink = Button(tab2, text="Generate random range", command=self.generate_random_range_bliking_number, activebackground='#464646',bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.button_random_range_blink.grid(row=1, column=0, sticky='W', padx=5, pady=3)
-
 
         self.state_random_value_blink = BooleanVar()
         self.state_random_value_blink.set(False)
-        self.button_random_value_blink = Button(tab2, text="Generate random unique value", command=self.generate_random_unique_bliking_number, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")#, var=check_button_random_value_blink)
+        self.button_random_value_blink = Button(tab2, text="Generate random unique value", command=self.generate_random_unique_bliking_number, bg='#464646', activebackground='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")#, var=check_button_random_value_blink)
         self.button_random_value_blink.grid(row=2, column=0, sticky='W', padx=5, pady=3)
         self.random_unique_blink_text = Label(tab2, text="Value:", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.random_unique_blink_text.grid(row=2, column=1, sticky='W', padx=5, pady=10)
@@ -144,12 +152,12 @@ class MyWindow:
 
         self.check_button_random_range_blink_on = BooleanVar()
         self.check_button_random_range_blink_on.set(False)
-        self.button_random_range_blink_on = Button(tab2, text="Generate random range", command=self.generate_random_range_on_number, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.button_random_range_blink_on = Button(tab2, text="Generate random range", command=self.generate_random_range_on_number, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.button_random_range_blink_on.grid(row=5, column=0, sticky='W', padx=5, pady=3)
 
         self.check_toggle_value_unique_on = BooleanVar()
         self.check_toggle_value_unique_on.set(False)
-        self.toggle_unique_value_on = Button(tab2, text="Generate random unique value", command=self.generate_random_unique_on_number, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")#, var=check_button_random_range_blink_on)
+        self.toggle_unique_value_on = Button(tab2, text="Generate random unique value", command=self.generate_random_unique_on_number, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")#, var=check_button_random_range_blink_on)
         self.toggle_unique_value_on.grid(row=6, column=0, sticky='W', padx=5, pady=3)
         self.random_unique_on = Label(tab2, text="Value:", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.random_unique_on.grid(row=6, column=1, sticky='W', padx=5, pady=10)
@@ -166,17 +174,24 @@ class MyWindow:
 
         self.check_use_perso = BooleanVar()
         self.check_use_perso.set(False)
-        self.use_perso = Button(tab3, text="Validate", command=self.use_own_sequence, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.use_perso = Button(tab3, text="Validate", command=self.use_own_sequence, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
         self.use_perso.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
 
 
-
         # ------- RUN SIMULATION SEQUENCE -------
-        self.run = Button(tab5, text='Generate TIF stack', command=self.set, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
+        self.run = Button(tab5, text='Generate TIF stack', command=self.set, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
         self.run.pack(pady=80)
         
-
-
+        
+        # ------- TEST TAB SEQUENCE -------
+        self.density_text = Label(tab4bis, text='TO DO', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
+        self.density_text.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
+        
+        # ------- TEST TAB SEQUENCE -------
+        self.dens1ity_text = Label(tab4, text='TO DO', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
+        self.dens1ity_text.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
+        
+        
     def use_own_sequence(self):
         self.check_use_perso.set(True)
 
@@ -212,6 +227,7 @@ class MyWindow:
 
     def check_delete(self):
         self.number_of_mol.delete(0, "end")
+        self.use_density.set(False)
         self.number_of_frames.delete(0, "end")
         self.file_name.delete(0, "end")
         self.edge.delete(0, "end")
@@ -225,6 +241,7 @@ class MyWindow:
         self.random_unique_blink_value.delete(0, "end")
         self.intensity.delete(0, "end")
         self.sd_intensity.delete(0, "end")
+        self.density.delete(0, "end")
         self.text.delete(1.0,END)
         self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2, 3, 4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
         self.predifined.set(False)
@@ -234,6 +251,7 @@ class MyWindow:
 
     def check_predifined_parameters(self):
         self.number_of_mol.insert(0, "100")
+        self.density.insert(0, "None")
         self.number_of_frames.insert(0, "30")
         self.file_name.insert(0, "sim01")
         self.edge.insert(0, "0")
@@ -246,6 +264,7 @@ class MyWindow:
         self.intensity.insert(0, '11000')
         self.sd_intensity.insert(0,'0')
         self.delete.set(False)
+   
 
 
     def set(self):
@@ -253,7 +272,11 @@ class MyWindow:
             frames = int(self.number_of_frames.get())
             filename = str(self.file_name.get())
             edge = int(self.edge.get())
-            
+            if (self.use_density.get() == True) and (self.density.get() != 'None'):
+                edge_ = int(self.edge.get())/5
+                size_image = 500 - edge_
+                surface = size_image*size_image*0.0256
+                molecules = int(float(self.density.get())*surface)
             if (str(self.random_unique_blink_value.get()) != ''):
                 blk_min = int(self.random_unique_blink_value.get())
                 blk_max = int(self.random_unique_blink_value.get())
@@ -274,7 +297,6 @@ class MyWindow:
                 lgt_max = int(self.max_on_time_value.get())
             bkg_value = int(self.background_value.get())
             sd_bkg_value = int(self.sd_bg_value.get())
-            
             
             generate_stack(frames, molecules, filename+'.tif', 
                         randomize=True, 
