@@ -29,7 +29,7 @@ class MyWindow:
         window.add(tab2, text ='Blinking')
         window.add(tab3, text ='Own blinking')
         window.add(tab4, text ='Previzualise Image')
-        window.add(tab4bis, text='Add shapes')
+        window.add(tab4bis, text='Use pattern')
         window.add(tab5, text ='Run simulation')
         window.pack(expand = 1, fill ="both")
 
@@ -187,15 +187,19 @@ class MyWindow:
         # ------- TEST TAB SEQUENCE -------
         self.image = Canvas(tab4, width=0, height=0, bg='#464646', highlightthickness=0, highlightbackground="#edebeb")
         self.image.pack()
-        self.show = Button(tab4, text='Show previzualisation', command=self.press_to_show, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=2)
+        self.show = Button(tab4, text='Show previzualisation', command=self.press_to_show, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=1)
         self.show.pack()
-        self.del_plot = Button(tab4, text='Clear plot', command=self.clear_plot, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=2)
+        self.del_plot = Button(tab4, text='Clear plot', command=self.clear_plot, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=1)
         self.del_plot.pack()
         
         
         # ------- TEST TAB SEQUENCE -------
-        self.dens1ity_text = Label(tab4bis, text='TO DO', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
-        self.dens1ity_text.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
+        # Grid coordinates
+        self.use_grille = BooleanVar()
+        self.use_grille.set(False)
+        self.checkgrille = Checkbutton(tab4bis, text='Set points as a grid', variable=self.use_grille, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
+        self.checkgrille.grid(row=1, column=1, sticky='WE', padx=10, pady=3)
+
         
         
     def use_own_sequence(self):
@@ -252,6 +256,7 @@ class MyWindow:
         self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2, 3, 4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
         self.predifined.set(False)
         self.check_use_perso.set(False)
+        self.clear_plot()
 
 
 
@@ -301,7 +306,7 @@ class MyWindow:
         edge = int(self.edge.get())
         if (self.use_density.get() == True) and (self.density.get() != 'None'):
             edge_ = int(self.edge.get())/5
-            size_image = 500 - edge_
+            size_image = 2500 - edge_
             surface = size_image*size_image*0.0256
             molecules = int(float(self.density.get())*surface)
         if (str(self.random_unique_blink_value.get()) != ''):
@@ -329,8 +334,8 @@ class MyWindow:
                     randomize=True, 
                     intensity=int(self.intensity.get()),
                     ii_sd=int(self.sd_intensity.get()),
-                    x_image=1250, 
-                    y_image=1250,
+                    x_image=2500, 
+                    y_image=2500,
                     length_min=lgt_min, 
                     length_max=lgt_max, 
                     blink_min=blk_min, 
@@ -339,7 +344,8 @@ class MyWindow:
                     sd_bckg_value=sd_bkg_value, 
                     blinking_seq=blink_seq,
                     edge=edge,
-                    save=False)
+                    save=False,
+                    grid=self.use_grille.get())
         return image
         
 
@@ -387,4 +393,5 @@ class MyWindow:
                     background_value=bkg_value,
                     sd_bckg_value=sd_bkg_value, 
                     blinking_seq=blink_seq,
-                    edge=edge)
+                    edge=edge,
+                    grid=self.use_grille.get())

@@ -9,6 +9,6 @@ def generate_on_times(frames, randomize=True, off_length_min=1, off_length_max=3
             off_length = random.choice(list(range(off_length_min, off_length_max+1)))
             a = random.randint(0, frames-off_length+1)
             blink.append(random.sample(range(a, a+off_length), off_length))
-        return sorted([j for i in blink for j in i])
+        return sorted(set([j for i in blink for j in i]))
     else:
         return list(range(frames-10, frames+1, 1))[::1]
