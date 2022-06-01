@@ -198,8 +198,15 @@ class MyWindow:
         self.use_grille = BooleanVar()
         self.use_grille.set(False)
         self.checkgrille = Checkbutton(tab4bis, text='Set points as a grid', variable=self.use_grille, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
-        self.checkgrille.grid(row=1, column=1, sticky='WE', padx=10, pady=3)
+        self.checkgrille.grid(row=1, column=1, sticky='W', padx=10, pady=3)
 
+        # Grid coordinates
+        self.use_circle = BooleanVar()
+        self.use_circle.set(False)
+        self.checkcircle = Checkbutton(tab4bis, text='Create circle of single molecule', variable=self.use_circle, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.checkcircle.grid(row=2, column=1, sticky='W', padx=10, pady=3)
+        self.num_circle = Entry(tab4bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.num_circle.grid(row=2, column=2, sticky="W", pady=10, ipadx=1)
         
         
     def use_own_sequence(self):
@@ -256,6 +263,9 @@ class MyWindow:
         self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2, 3, 4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
         self.predifined.set(False)
         self.check_use_perso.set(False)
+        self.use_circle.set(False)
+        self.use_grille.set(False)
+        self.num_circle.delete(0, "end")
         self.clear_plot()
 
 
@@ -274,6 +284,7 @@ class MyWindow:
         self.sd_bg_value.insert(0, '100')
         self.intensity.insert(0, '11000')
         self.sd_intensity.insert(0,'0')
+        self.num_circle.insert(0,'0')
         self.delete.set(False)
    
    
@@ -308,7 +319,10 @@ class MyWindow:
             edge_ = int(self.edge.get())/5
             size_image = 2500 - edge_
             surface = size_image*size_image*0.0256
-            molecules = int(float(self.density.get())*surface)
+            if (self.use_circle.get()==True) and (int(self.num_circle.get()) != 0):
+                surface = 300*300*0.0256    
+            molecules = int(float(self.density.get())*surface)#*int(self.num_circle.get())
+        
         if (str(self.random_unique_blink_value.get()) != ''):
             blk_min = int(self.random_unique_blink_value.get())
             blk_max = int(self.random_unique_blink_value.get())
@@ -345,7 +359,9 @@ class MyWindow:
                     blinking_seq=blink_seq,
                     edge=edge,
                     save=False,
-                    grid=self.use_grille.get())
+                    grid=self.use_grille.get(),
+                    circle=self.use_circle.get(), 
+                    num_circle=int(self.num_circle.get()))
         return image
         
 
@@ -394,4 +410,6 @@ class MyWindow:
                     sd_bckg_value=sd_bkg_value, 
                     blinking_seq=blink_seq,
                     edge=edge,
-                    grid=self.use_grille.get())
+                    grid=self.use_grille.get(),
+                    circle=self.use_circle.get(), 
+                    num_circle=int(self.num_circle.get()))
