@@ -3,7 +3,8 @@ from tkinter import ttk
 from ttkthemes import ThemedStyle
 from generate_stack import *
 from convert_str_to_int import convert_str_to_int
-
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt 
 import random
 
 
@@ -184,11 +185,16 @@ class MyWindow:
         
         
         # ------- TEST TAB SEQUENCE -------
-        self.density_text = Label(tab4bis, text='TO DO', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
-        self.density_text.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
+        self.image = Canvas(tab4, width=0, height=0, bg='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.image.pack()
+        self.show = Button(tab4, text='Show previzualisation', command=self.press_to_show, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=2)
+        self.show.pack()
+        self.del_plot = Button(tab4, text='Clear plot', command=self.clear_plot, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=2)
+        self.del_plot.pack()
+        
         
         # ------- TEST TAB SEQUENCE -------
-        self.dens1ity_text = Label(tab4, text='TO DO', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
+        self.dens1ity_text = Label(tab4bis, text='TO DO', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
         self.dens1ity_text.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
         
         
@@ -265,51 +271,120 @@ class MyWindow:
         self.sd_intensity.insert(0,'0')
         self.delete.set(False)
    
+   
+    def press_to_show(self):
+        global output, fig
+        image = self.previzualize()
+        fig = plt.figure()
+        fig.patch.set_facecolor('#464646')
+        ax = fig.add_subplot(111)
+        ax.axis('off')
+        output = FigureCanvasTkAgg(fig, master=self.image)
+        output.draw()
+        output.get_tk_widget().pack()
+        ax.imshow(image)
 
+
+    def clear_plot(self):
+        global output
+        if output:
+            for child in self.image.winfo_children():
+                child.destroy()
+        plt.close(fig)
+        output = None
+
+
+    def previzualize(self):
+        molecules = int(self.number_of_mol.get())
+        frames = 1
+        filename = str(self.file_name.get())
+        edge = int(self.edge.get())
+        if (self.use_density.get() == True) and (self.density.get() != 'None'):
+            edge_ = int(self.edge.get())/5
+            size_image = 500 - edge_
+            surface = size_image*size_image*0.0256
+            molecules = int(float(self.density.get())*surface)
+        if (str(self.random_unique_blink_value.get()) != ''):
+            blk_min = int(self.random_unique_blink_value.get())
+            blk_max = int(self.random_unique_blink_value.get())
+        else:
+            blk_min = int(self.minimum_value_blink.get())
+            blk_max = int(self.maximum_value_blink.get())
+            
+        if self.check_use_perso.get() == False:
+            blink_seq = None
+        else:
+            blink_seq = convert_str_to_int(self.text.get(1.0, "end-1c"))
+            
+        if (str(self.random_unique_value_on.get()) != ''):
+            lgt_min = int(self.random_unique_value_on.get())
+            lgt_max = int(self.random_unique_value_on.get())
+        else:
+            lgt_min = int(self.min_on_time_value.get())
+            lgt_max = int(self.max_on_time_value.get())
+        bkg_value = int(self.background_value.get())
+        sd_bkg_value = int(self.sd_bg_value.get())
+        
+        image = generate_stack(frames, molecules, filename+'.tif', 
+                    randomize=True, 
+                    intensity=int(self.intensity.get()),
+                    ii_sd=int(self.sd_intensity.get()),
+                    x_image=1250, 
+                    y_image=1250,
+                    length_min=lgt_min, 
+                    length_max=lgt_max, 
+                    blink_min=blk_min, 
+                    blink_max=blk_max, 
+                    background_value=bkg_value,
+                    sd_bckg_value=sd_bkg_value, 
+                    blinking_seq=blink_seq,
+                    edge=edge,
+                    save=False)
+        return image
+        
 
     def set(self):
-            molecules = int(self.number_of_mol.get())
-            frames = int(self.number_of_frames.get())
-            filename = str(self.file_name.get())
-            edge = int(self.edge.get())
-            if (self.use_density.get() == True) and (self.density.get() != 'None'):
-                edge_ = int(self.edge.get())/5
-                size_image = 500 - edge_
-                surface = size_image*size_image*0.0256
-                molecules = int(float(self.density.get())*surface)
-            if (str(self.random_unique_blink_value.get()) != ''):
-                blk_min = int(self.random_unique_blink_value.get())
-                blk_max = int(self.random_unique_blink_value.get())
-            else:
-                blk_min = int(self.minimum_value_blink.get())
-                blk_max = int(self.maximum_value_blink.get())
-                
-            if self.check_use_perso.get() == False:
-                blink_seq = None
-            else:
-                blink_seq = convert_str_to_int(self.text.get(1.0, "end-1c"))
-                
-            if (str(self.random_unique_value_on.get()) != ''):
-                lgt_min = int(self.random_unique_value_on.get())
-                lgt_max = int(self.random_unique_value_on.get())
-            else:
-                lgt_min = int(self.min_on_time_value.get())
-                lgt_max = int(self.max_on_time_value.get())
-            bkg_value = int(self.background_value.get())
-            sd_bkg_value = int(self.sd_bg_value.get())
+        molecules = int(self.number_of_mol.get())
+        frames = int(self.number_of_frames.get())
+        filename = str(self.file_name.get())
+        edge = int(self.edge.get())
+        if (self.use_density.get() == True) and (self.density.get() != 'None'):
+            edge_ = int(self.edge.get())/5
+            size_image = 500 - edge_
+            surface = size_image*size_image*0.0256
+            molecules = int(float(self.density.get())*surface)
+        if (str(self.random_unique_blink_value.get()) != ''):
+            blk_min = int(self.random_unique_blink_value.get())
+            blk_max = int(self.random_unique_blink_value.get())
+        else:
+            blk_min = int(self.minimum_value_blink.get())
+            blk_max = int(self.maximum_value_blink.get())
             
-            generate_stack(frames, molecules, filename+'.tif', 
-                        randomize=True, 
-                        intensity=int(self.intensity.get()),
-                        ii_sd=int(self.sd_intensity.get()),
-                        x_image=2500, 
-                        y_image=2500,
-                        length_min=lgt_min, 
-                        length_max=lgt_max, 
-                        blink_min=blk_min, 
-                        blink_max=blk_max, 
-                        background_value=bkg_value,
-                        sd_bckg_value=sd_bkg_value, 
-                        blinking_seq=blink_seq,
-                        edge=edge)
-
+        if self.check_use_perso.get() == False:
+            blink_seq = None
+        else:
+            blink_seq = convert_str_to_int(self.text.get(1.0, "end-1c"))
+            
+        if (str(self.random_unique_value_on.get()) != ''):
+            lgt_min = int(self.random_unique_value_on.get())
+            lgt_max = int(self.random_unique_value_on.get())
+        else:
+            lgt_min = int(self.min_on_time_value.get())
+            lgt_max = int(self.max_on_time_value.get())
+        bkg_value = int(self.background_value.get())
+        sd_bkg_value = int(self.sd_bg_value.get())
+        
+        generate_stack(frames, molecules, filename+'.tif', 
+                    randomize=True, 
+                    intensity=int(self.intensity.get()),
+                    ii_sd=int(self.sd_intensity.get()),
+                    x_image=2500, 
+                    y_image=2500,
+                    length_min=lgt_min, 
+                    length_max=lgt_max, 
+                    blink_min=blk_min, 
+                    blink_max=blk_max, 
+                    background_value=bkg_value,
+                    sd_bckg_value=sd_bkg_value, 
+                    blinking_seq=blink_seq,
+                    edge=edge)
