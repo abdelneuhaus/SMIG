@@ -11,7 +11,6 @@ import random
 class MyWindow:
     
     def __init__(self, root):
-        root.title("SMIG")
         window = ttk.Notebook(root)
         style = ThemedStyle(root)
         style.theme_use('equilux')
