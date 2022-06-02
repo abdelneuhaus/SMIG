@@ -314,17 +314,8 @@ class MyWindow:
         frames = 1
         filename = str(self.file_name.get())
         edge = int(self.edge.get())
-        if (self.use_density.get() == True) and (self.density.get() != 'None'):
-            edge_ = int(self.edge.get())/5
-            size_image = 2500 - edge_
-            surface = size_image*size_image*0.0256
-            if (self.use_circle.get()==True) and (int(self.num_circle.get()) != 0):
-                surface = 300*300*0.0256    
-            molecules = int(float(self.density.get())*surface)
-        
         blk_min = 1
         blk_max = 1
-            
         if self.check_use_perso.get() == False:
             blink_seq = None
         else:
@@ -333,7 +324,15 @@ class MyWindow:
         lgt_max = 1
         bkg_value = int(self.background_value.get())
         sd_bkg_value = int(self.sd_bg_value.get())
-        
+        if (self.use_density.get() == True) and (self.density.get() != 'None'):
+            edge_ = int(self.edge.get())/5
+            size_image = 500 - edge_
+            surface = size_image*size_image*0.0256
+            if (self.use_circle.get()==True) and (int(self.num_circle.get()) != 0):
+                surface = 300*300*0.0256    
+            mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
+            molecules = int((float(self.density.get())*surface*frames)/(mean_blink*mean_ON))
+            
         image = generate_stack(frames, molecules, filename+'.tif', 
                     randomize=True, 
                     intensity=int(self.intensity.get()),
@@ -360,11 +359,7 @@ class MyWindow:
         frames = int(self.number_of_frames.get())
         filename = str(self.file_name.get())
         edge = int(self.edge.get())
-        if (self.use_density.get() == True) and (self.density.get() != 'None'):
-            edge_ = int(self.edge.get())/5
-            size_image = 500 - edge_
-            surface = size_image*size_image*0.0256
-            molecules = int(float(self.density.get())*surface)
+        
         if (str(self.random_unique_blink_value.get()) != ''):
             blk_min = int(self.random_unique_blink_value.get())
             blk_max = int(self.random_unique_blink_value.get())
@@ -386,6 +381,14 @@ class MyWindow:
         bkg_value = int(self.background_value.get())
         sd_bkg_value = int(self.sd_bg_value.get())
         
+        if (self.use_density.get() == True) and (self.density.get() != 'None'):
+            edge_ = int(self.edge.get())/5
+            size_image = 500 - edge_
+            surface = size_image*size_image*0.0256
+            mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
+            molecules = int((float(self.density.get())*surface*frames)/(mean_blink*mean_ON))
+            print(molecules, surface, mean_blink, mean_ON)
+            
         generate_stack(frames, molecules, filename+'.tif', 
                     randomize=True, 
                     intensity=int(self.intensity.get()),
