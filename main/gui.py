@@ -323,24 +323,15 @@ class MyWindow:
                 surface = 300*300*0.0256    
             molecules = int(float(self.density.get())*surface)#*int(self.num_circle.get())
         
-        if (str(self.random_unique_blink_value.get()) != ''):
-            blk_min = int(self.random_unique_blink_value.get())
-            blk_max = int(self.random_unique_blink_value.get())
-        else:
-            blk_min = int(self.minimum_value_blink.get())
-            blk_max = int(self.maximum_value_blink.get())
+        blk_min = 1
+        blk_max = 1
             
         if self.check_use_perso.get() == False:
             blink_seq = None
         else:
             blink_seq = convert_str_to_int(self.text.get(1.0, "end-1c"))
-            
-        if (str(self.random_unique_value_on.get()) != ''):
-            lgt_min = int(self.random_unique_value_on.get())
-            lgt_max = int(self.random_unique_value_on.get())
-        else:
-            lgt_min = int(self.min_on_time_value.get())
-            lgt_max = int(self.max_on_time_value.get())
+        lgt_min = 1
+        lgt_max = 1
         bkg_value = int(self.background_value.get())
         sd_bkg_value = int(self.sd_bg_value.get())
         
