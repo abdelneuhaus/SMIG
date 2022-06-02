@@ -280,7 +280,7 @@ class MyWindow:
         self.min_on_time_value.insert(0, "1")
         self.max_on_time_value.insert(0, "2")
         self.background_value.insert(0, '498')
-        self.sd_bg_value.insert(0, '100')
+        self.sd_bg_value.insert(0, '50')
         self.intensity.insert(0, '11000')
         self.sd_intensity.insert(0,'0')
         self.num_circle.insert(0,'0')
@@ -297,7 +297,7 @@ class MyWindow:
         output = FigureCanvasTkAgg(fig, master=self.image)
         output.draw()
         output.get_tk_widget().pack()
-        ax.imshow(image)
+        ax.imshow(image, cmap='gray')
 
 
     def clear_plot(self):
@@ -320,7 +320,7 @@ class MyWindow:
             surface = size_image*size_image*0.0256
             if (self.use_circle.get()==True) and (int(self.num_circle.get()) != 0):
                 surface = 300*300*0.0256    
-            molecules = int(float(self.density.get())*surface)#*int(self.num_circle.get())
+            molecules = int(float(self.density.get())*surface)
         
         blk_min = 1
         blk_max = 1
