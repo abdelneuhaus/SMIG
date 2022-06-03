@@ -188,8 +188,6 @@ class MyWindow:
         self.image.pack()
         self.show = Button(tab4, text='Show previzualisation', command=self.press_to_show, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=1)
         self.show.pack()
-        self.del_plot = Button(tab4, text='Clear plot', command=self.clear_plot, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=1)
-        self.del_plot.pack()
         
         
         # ------- TEST TAB SEQUENCE -------
@@ -289,6 +287,9 @@ class MyWindow:
    
     def press_to_show(self):
         global output, fig
+        for child in self.image.winfo_children():
+                child.destroy()
+        output = None
         image = self.previzualize()
         fig = plt.figure()
         fig.patch.set_facecolor('#464646')
@@ -299,14 +300,6 @@ class MyWindow:
         output.get_tk_widget().pack()
         ax.imshow(image, cmap='gray')
 
-
-    def clear_plot(self):
-        global output
-        if output:
-            for child in self.image.winfo_children():
-                child.destroy()
-        plt.close(fig)
-        output = None
 
 
     def previzualize(self):
