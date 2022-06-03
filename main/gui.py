@@ -335,7 +335,6 @@ class MyWindow:
                 surface = 300*300*0.0256    
             mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
             molecules = int(float(self.density.get())*surface*frames/(mean_blink*mean_ON))
-            print(molecules, surface, mean_blink, mean_ON)
 
         image = generate_stack(frames, molecules, filename+'.tif', 
                     randomize=True, 
@@ -391,7 +390,6 @@ class MyWindow:
             surface = size_image*size_image*0.0256
             mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
             molecules = int(float(self.density.get())*surface*frames/(mean_blink*mean_ON))
-            print(molecules, surface, mean_blink, mean_ON)
             
         generate_stack(frames, molecules, filename+'.tif', 
                     randomize=True, 
