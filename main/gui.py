@@ -10,7 +10,7 @@ from binary_mask_utils import get_polygons, generate_coordinates_poly, get_all_c
 
 import matplotlib.pyplot as plt 
 import random
-
+import numpy as np
 
 class MyWindow:
     

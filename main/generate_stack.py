@@ -7,7 +7,7 @@ from save_parameters import save_parameters
 
 from scipy.ndimage import gaussian_filter
 import tifffile
-
+import numpy as np
 
 def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=60000, ii_sd=0, x_image=2500, y_image=2500, length_min=1, length_max=3, 
                                    blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, blinking_seq=None, edge=0, save=True, grid=False, 
@@ -27,6 +27,10 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         gaussian_image = gaussian_filter(data, sigma=5)
         down_image = downsampling(gaussian_image)
         out = add_noise(down_image, bckg=background_value, sd=sd_bckg_value)
+        if binary_file != None:
+            a = np.rot90(out, 3)
+            a = np.flip(a)
+            return np.flipud(a)
         return out
     with tifffile.TiffWriter(filename) as tif:
         for i in range(frames):
@@ -34,6 +38,10 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
             gaussian_image = gaussian_filter(data, sigma=5)
             down_image = downsampling(gaussian_image)
             out = add_noise(down_image, bckg=background_value, sd=sd_bckg_value)
+            if binary_file != None:
+                a = np.rot90(out, 3)
+                b = np.flip(a)
+                out = np.flipud(b)
             tif.write(out, photometric='minisblack')
             save_data(points, x_image, filename)
         save_parameters(filename, frames, nb_emitters, intensity, length_min, length_max, blink_min, blink_max, background_value, sd_bckg_value, blinking_seq, edge)
