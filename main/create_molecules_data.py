@@ -3,11 +3,29 @@ from generate_intensity import generate_intensity
 from generate_on_times import generate_on_times
 from generate_grid_coordinates import generate_grid_coordinates
 from generate_circle_coordinates import generate_circle_coordinates
-import random 
+import random
 
 
-def create_molecules_data(frames, nbr_molecules=20, size_image=2500, randomize=True, value=100000, ii_sd=0, off_length_min=1, off_length_max=3, number_blink_min=1, number_blink_max=3, own_blink=None, edge=0, grid=False, circle=False, num_circle=0):
+def create_molecules_data(frames, nbr_molecules=20, size_image=2500, randomize=True, value=100000, 
+                          ii_sd=0, off_length_min=1, off_length_max=3, number_blink_min=1, number_blink_max=3, 
+                          own_blink=None, edge=0, grid=False, circle=False, num_circle=0, 
+                          binary_file=None, coordinates_binary=None):
     data = dict()
+    
+    # Creation of data with binary image
+    if binary_file != None:
+        otp = coordinates_binary
+        for i in range(nbr_molecules):
+            z = random.choice(otp)
+            otp.remove(z)
+            # print(list(z), i)
+            if (own_blink == None):
+                data[i] = {'coordinates': list(z), 'intensity': generate_intensity(value, ii_sd), 'on_times': generate_on_times(frames, randomize=randomize, off_length_min=off_length_min, off_length_max=off_length_max, number_blink_min=number_blink_min, number_blink_max=number_blink_max)}
+            else:
+                data[i] = {'coordinates': list(z), 'intensity': generate_intensity(value, ii_sd), 'on_times': own_blink}
+        return data
+    
+    # Circle checked
     if circle == True:
         radii=[300]*num_circle
         origin = []
@@ -15,6 +33,7 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=2500, randomize=T
             x=random.sample(range(edge+(max(radii)), size_image-edge-(max(radii))), 1)[0]
             y=random.sample(range(edge+(max(radii)), size_image-edge-(max(radii))), 1)[0]
             origin.append([x, y])
+    # General protocol        
     for i in range (nbr_molecules):
         if (own_blink == None):
             if grid == True:

@@ -10,7 +10,8 @@ import tifffile
 
 
 def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=60000, ii_sd=0, x_image=2500, y_image=2500, length_min=1, length_max=3, 
-                                   blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, blinking_seq=None, edge=0, save=True, grid=False, circle=False, num_circle=0):
+                                   blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, blinking_seq=None, edge=0, save=True, grid=False, 
+                                   circle=False, num_circle=0, binary_file=None, coordinates_binary=None):
     points = create_molecules_data(frames, 
                                    nbr_molecules=nb_emitters, 
                                    size_image=x_image, 
@@ -19,7 +20,8 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
                                    ii_sd=ii_sd, 
                                    off_length_min=length_min, off_length_max=length_max, 
                                    number_blink_min=blink_min, number_blink_max=blink_max, own_blink=blinking_seq, 
-                                   edge=edge, grid=grid, circle=circle, num_circle=num_circle)
+                                   edge=edge, grid=grid, circle=circle, num_circle=num_circle, binary_file=binary_file,
+                                   coordinates_binary=coordinates_binary)
     if save == False:
         data = generate_one_frame(points, y_image, frame=0)
         gaussian_image = gaussian_filter(data, sigma=5)

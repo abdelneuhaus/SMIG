@@ -4,6 +4,10 @@ from ttkthemes import ThemedStyle
 from generate_stack import *
 from convert_str_to_int import convert_str_to_int
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from tkinter import filedialog as fd
+from binary_mask_utils import get_polygons, generate_coordinates_poly, get_all_coordinates, pick_coordinates
+
+
 import matplotlib.pyplot as plt 
 import random
 
@@ -190,12 +194,12 @@ class MyWindow:
         self.show.pack()
         
         
-        # ------- TEST TAB SEQUENCE -------
+        # ------- OPTIONS TAB -------
         # Grid coordinates
         self.use_grille = BooleanVar()
         self.use_grille.set(False)
         self.checkgrille = Checkbutton(tab4bis, text='Set points as a grid', variable=self.use_grille, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
-        self.checkgrille.grid(row=1, column=1, sticky='W', padx=10, pady=3)
+        self.checkgrille.grid(row=1, column=1, sticky='W', pady=3)
 
         # Grid coordinates
         self.use_circle = BooleanVar()
@@ -204,6 +208,36 @@ class MyWindow:
         self.checkcircle.grid(row=2, column=1, sticky='W', padx=10, pady=3)
         self.num_circle = Entry(tab4bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
         self.num_circle.grid(row=2, column=2, sticky="W", pady=10, ipadx=1)
+        
+        # Load binary image
+        # self.use_binary_mask = BooleanVar()
+        # self.use_binary_mask.set(False)
+        self.use_mask_button = Button(tab4bis, text='Load binary image', command=self.load_binary_mask, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.use_mask_button.grid(row=3, column=1,  sticky="W", padx=20, pady=40)
+        self.binary_image = None
+        self.polygons = None
+        self.polygons_coordinates = None
+        
+        
+    def load_binary_mask(self):
+        filetypes = (
+            ('JPG files', '*.jpg'),
+            ('PNG files', '*.png'),
+            ('TIF files', '*.tif'),
+            ('All files', '*.*'))
+
+        self.binary_image = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        
+        polygons = get_polygons(self.binary_image)
+        tmp = list()
+        otp = get_all_coordinates(polygons)
+        for i in range(len(polygons)):
+            tmp.append(generate_coordinates_poly(otp[i]))
+        self.polygons_coordinates = [j for i in tmp for j in i]
+        print("Done")
         
         
     def use_own_sequence(self):
@@ -264,6 +298,9 @@ class MyWindow:
         self.use_grille.set(False)
         self.num_circle.delete(0, "end")
         self.clear_plot()
+        self.polygons = None
+        self.polygons_coordinates = None
+        self.binary_image = None
 
 
 
@@ -334,9 +371,9 @@ class MyWindow:
             if (self.use_circle.get()==True) and (int(self.num_circle.get()) != 0):
                 surface = 300*300*0.0256    
             mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
-            molecules = int(float(self.density.get())*surface*frames/(mean_blink*mean_ON))
+            molecules = int(float(self.density.get())*surface/(mean_blink*mean_ON))*frames
 
-        image = generate_stack(frames, molecules, filename+'.tif', 
+        image = generate_stack(1, molecules, filename+'.tif', 
                     randomize=True, 
                     intensity=int(self.intensity.get()),
                     ii_sd=int(self.sd_intensity.get()),
@@ -353,7 +390,9 @@ class MyWindow:
                     save=False,
                     grid=self.use_grille.get(),
                     circle=self.use_circle.get(), 
-                    num_circle=int(self.num_circle.get()))
+                    num_circle=int(self.num_circle.get()),
+                    binary_file=self.binary_image,
+                    coordinates_binary=self.polygons_coordinates)
         return image
         
 
@@ -389,7 +428,7 @@ class MyWindow:
             size_image = 500 - edge_
             surface = size_image*size_image*0.0256
             mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
-            molecules = int(float(self.density.get())*surface*frames/(mean_blink*mean_ON))
+            molecules = int(float(self.density.get())*surface/(mean_blink*mean_ON))*frames
             
         generate_stack(frames, molecules, filename+'.tif', 
                     randomize=True, 
@@ -407,4 +446,6 @@ class MyWindow:
                     edge=edge,
                     grid=self.use_grille.get(),
                     circle=self.use_circle.get(), 
-                    num_circle=int(self.num_circle.get()))
+                    num_circle=int(self.num_circle.get()),
+                    binary_file=self.binary_image,
+                    coordinates_binary=self.polygons_coordinates)
