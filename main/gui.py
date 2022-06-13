@@ -1,4 +1,3 @@
-from cmath import pi
 from tkinter import *					
 from tkinter import ttk
 from ttkthemes import ThemedStyle
@@ -11,7 +10,8 @@ from binary_mask_utils import get_polygons, generate_coordinates_poly, get_all_c
 
 import matplotlib.pyplot as plt 
 import random
-import numpy as np
+import json
+
 
 class MyWindow:
     
@@ -48,6 +48,12 @@ class MyWindow:
         self.delete.set(False)
         self.delete_check = Button(tab1, text='Delete all settings', command=self.check_delete, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.delete_check.grid(row=6, column=0, columnspan=7, sticky="WE", pady=3, ipadx=1, padx=5)
+
+        self.load_data_bool = BooleanVar()
+        self.load_data_bool.set(False)
+        self.load_data = Button(tab1, text='Load molecules data', command=self.load_molecule_data, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.load_data.grid(row=7, column=0, columnspan=7, sticky="WE", pady=3, ipadx=1, padx=5)
+        self.data_loaded = None
 
         # Frames
         self.number_of_frames_text = Label(tab1, text=" Number of frames", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
@@ -217,7 +223,21 @@ class MyWindow:
         self.polygons = None
         self.polygons_coordinates = None
         
-        
+    
+    def load_molecule_data(self):
+        filetypes = (('JSON files', '*.json'), ('All files', '*.*'))
+
+        self.load_data = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+
+        with open(self.load_data, 'r') as f:
+            self.data_loaded = json.load(f)
+        self.load_data_bool.set(True)
+        self.data_loaded = {int(k):v for k,v in self.data_loaded.items()}
+    
+    
     def load_binary_mask(self):
         filetypes = (
             ('JPG files', '*.jpg'),
@@ -300,6 +320,9 @@ class MyWindow:
         self.polygons = None
         self.polygons_coordinates = None
         self.binary_image = None
+        self.load_data_bool.set(False)
+        self.load_data = None
+        self.data_loaded = None
 
 
 
@@ -373,7 +396,9 @@ class MyWindow:
                     num_circle=int(self.num_circle.get()),
                     binary_file=self.binary_image,
                     coordinates_binary=self.polygons_coordinates, 
-                    use_density = self.use_density.get())
+                    use_density = self.use_density.get(),
+                    is_loaded=self.load_data_bool.get(), 
+                    loaded_data=self.data_loaded)
         return image
         
 
@@ -432,4 +457,6 @@ class MyWindow:
                     num_circle=int(self.num_circle.get()),
                     binary_file=self.binary_image,
                     coordinates_binary=self.polygons_coordinates,
-                    use_density = self.use_density.get())
+                    use_density = self.use_density.get(),
+                    is_loaded=self.load_data_bool.get(), 
+                    loaded_data=self.data_loaded)

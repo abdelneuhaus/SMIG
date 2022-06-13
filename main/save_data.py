@@ -1,13 +1,15 @@
-def save_data(points, x_image, filename):
+import json
+
+def save_data(points, filename):
     filename = filename.replace('.tif','')
-    with open(str(filename)+'.txt', 'w') as f:
-        f.write('id \t')
-        f.write('approximative coordinates (x,y) \t')
-        f.write('blinking frames \n')
-        for line in points.keys():
-            f.write(str(line))
-            f.write('\t')
-            f.write(str(tuple(ti/(x_image/500) for ti in points[line]['coordinates'])[::-1]))
-            f.write('\t')
-            f.write(str([x+1 for x in points[line]['on_times']]))
-            f.write('\n')
+    dictionary = dict()
+    for i in range(len(points)):
+        dictionary[i] = {
+            'coordinates': points[i]['coordinates'],
+            'intensity': points[i]['intensity'],
+            'on_times': points[i]['on_times']
+        }
+    json_object = json.dumps(dictionary, indent = 4)
+  
+    with open(filename+".json", "w") as outfile:
+        outfile.write(json_object)
