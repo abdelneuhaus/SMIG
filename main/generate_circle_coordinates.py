@@ -6,7 +6,6 @@ def generate_circle_coordinates(size_image=500, edge=0, origin=list(), radius=li
     r = radius[j]
     x_circle = origin[j][0]
     y_circle = origin[j][1]
-    # (x - center_x)² + (y - center_y)² < radius²
     for i in range(1):
         x=random.sample(range(edge, size_image-edge), 1)[0]
         y=random.sample(range(edge, size_image-edge), 1)[0]

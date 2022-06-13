@@ -1,3 +1,4 @@
+from cmath import pi
 from tkinter import *					
 from tkinter import ttk
 from ttkthemes import ThemedStyle
@@ -210,8 +211,6 @@ class MyWindow:
         self.num_circle.grid(row=2, column=2, sticky="W", pady=10, ipadx=1)
         
         # Load binary image
-        # self.use_binary_mask = BooleanVar()
-        # self.use_binary_mask.set(False)
         self.use_mask_button = Button(tab4bis, text='Load binary image', command=self.load_binary_mask, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.use_mask_button.grid(row=3, column=1,  sticky="W", padx=20, pady=40)
         self.binary_image = None
@@ -341,37 +340,18 @@ class MyWindow:
 
     def previzualize(self):
         molecules = int(self.number_of_mol.get())
-        frames = 1
         filename = str(self.file_name.get())
         edge = int(self.edge.get())
-        if (str(self.random_unique_blink_value.get()) != ''):
-            blk_min = int(self.random_unique_blink_value.get())
-            blk_max = int(self.random_unique_blink_value.get())
-        else:
-            blk_min = int(self.minimum_value_blink.get())
-            blk_max = int(self.maximum_value_blink.get())
-            
         if self.check_use_perso.get() == False:
             blink_seq = None
         else:
             blink_seq = convert_str_to_int(self.text.get(1.0, "end-1c"))
-            
-        if (str(self.random_unique_value_on.get()) != ''):
-            lgt_min = int(self.random_unique_value_on.get())
-            lgt_max = int(self.random_unique_value_on.get())
-        else:
-            lgt_min = int(self.min_on_time_value.get())
-            lgt_max = int(self.max_on_time_value.get())
         bkg_value = int(self.background_value.get())
         sd_bkg_value = int(self.sd_bg_value.get())
         if (self.use_density.get() == True) and (self.density.get() != 'None'):
             edge_ = int(self.edge.get())/5
             size_image = 500 - edge_
-            surface = size_image*size_image*0.0256
-            if (self.use_circle.get()==True) and (int(self.num_circle.get()) != 0):
-                surface = 300*300*0.0256    
-            mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
-            molecules = int(float(self.density.get())*surface/(mean_blink*mean_ON))*frames
+            molecules = int((size_image*0.16)*float(self.density.get()))*int((size_image*0.16)*float(self.density.get()))
 
         image = generate_stack(1, molecules, filename+'.tif', 
                     randomize=True, 
@@ -392,7 +372,8 @@ class MyWindow:
                     circle=self.use_circle.get(), 
                     num_circle=int(self.num_circle.get()),
                     binary_file=self.binary_image,
-                    coordinates_binary=self.polygons_coordinates)
+                    coordinates_binary=self.polygons_coordinates, 
+                    use_density = self.use_density.get())
         return image
         
 
@@ -426,9 +407,11 @@ class MyWindow:
         if (self.use_density.get() == True) and (self.density.get() != 'None'):
             edge_ = int(self.edge.get())/5
             size_image = 500 - edge_
-            surface = size_image*size_image*0.0256
-            mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
-            molecules = int(float(self.density.get())*surface/(mean_blink*mean_ON))*frames
+            molecules = int((size_image*0.16)*float(self.density.get()))*int((size_image*0.16)*float(self.density.get()))
+            # if (self.use_circle.get()==True) and (int(self.num_circle.get()) != 0):
+            #     surface = 60*pi/2   
+            #     mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
+            #     molecules = int(float(self.density.get())*surface/(mean_blink*mean_ON))*frames
             
         generate_stack(frames, molecules, filename+'.tif', 
                     randomize=True, 
@@ -448,4 +431,5 @@ class MyWindow:
                     circle=self.use_circle.get(), 
                     num_circle=int(self.num_circle.get()),
                     binary_file=self.binary_image,
-                    coordinates_binary=self.polygons_coordinates)
+                    coordinates_binary=self.polygons_coordinates,
+                    use_density = self.use_density.get())
