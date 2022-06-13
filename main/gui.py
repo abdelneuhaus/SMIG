@@ -227,16 +227,19 @@ class MyWindow:
     def load_molecule_data(self):
         filetypes = (('JSON files', '*.json'), ('All files', '*.*'))
 
-        self.load_data = fd.askopenfilename(
-            title='Open a file',
-            initialdir='/',
-            filetypes=filetypes)
+        try:
+            self.load_data = fd.askopenfilename(
+                title='Open a file',
+                initialdir='.',
+                filetypes=filetypes)
 
-        with open(self.load_data, 'r') as f:
-            self.data_loaded = json.load(f)
-        self.load_data_bool.set(True)
-        self.data_loaded = {int(k):v for k,v in self.data_loaded.items()}
-    
+            with open(self.load_data, 'r') as f:
+                self.data_loaded = json.load(f)
+            self.load_data_bool.set(True)
+            self.data_loaded = {int(k):v for k,v in self.data_loaded.items()}
+        except:
+            print("No JSON loaded")
+        
     
     def load_binary_mask(self):
         filetypes = (
@@ -244,19 +247,21 @@ class MyWindow:
             ('PNG files', '*.png'),
             ('TIF files', '*.tif'),
             ('All files', '*.*'))
-
-        self.binary_image = fd.askopenfilename(
-            title='Open a file',
-            initialdir='/',
-            filetypes=filetypes)
-        
-        polygons = get_polygons(self.binary_image)
-        tmp = list()
-        otp = get_all_coordinates(polygons)
-        for i in range(len(polygons)):
-            tmp.append(generate_coordinates_poly(otp[i]))
-        self.polygons_coordinates = [j for i in tmp for j in i]
-        print("Done")
+        try:
+            self.binary_image = fd.askopenfilename(
+                title='Open a file',
+                initialdir='.',
+                filetypes=filetypes)
+            
+            polygons = get_polygons(self.binary_image)
+            tmp = list()
+            otp = get_all_coordinates(polygons)
+            for i in range(len(polygons)):
+                tmp.append(generate_coordinates_poly(otp[i]))
+            self.polygons_coordinates = [j for i in tmp for j in i]
+            print("Done")
+        except:
+            print("No file loaded")
         
         
     def use_own_sequence(self):

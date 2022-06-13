@@ -36,7 +36,6 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         return out
     with tifffile.TiffWriter(filename) as tif:
         for i in range(frames):
-            print(i)
             data = generate_one_frame(points, y_image, frame=i)
             gaussian_image = gaussian_filter(data, sigma=5)
             down_image = downsampling(gaussian_image)
