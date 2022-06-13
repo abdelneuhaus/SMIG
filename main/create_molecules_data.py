@@ -1,4 +1,3 @@
-import imghdr
 from generate_coordinates import generate_coordinates
 from generate_intensity import generate_intensity
 from generate_on_times import generate_on_times

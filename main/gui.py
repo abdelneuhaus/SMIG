@@ -5,7 +5,7 @@ from generate_stack import *
 from convert_str_to_int import convert_str_to_int
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import filedialog as fd
-from binary_mask_utils import get_polygons, generate_coordinates_poly, get_all_coordinates, pick_coordinates
+from binary_mask_utils import get_polygons, generate_coordinates_poly, get_all_coordinates
 
 
 import matplotlib.pyplot as plt 

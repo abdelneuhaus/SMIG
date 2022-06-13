@@ -4,3 +4,8 @@ re
 random
 scipy
 tkinter
+cv2
+mahotas
+ttkthemes
+json
+matplotlib.pyplot
