@@ -7,7 +7,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import filedialog as fd
 from binary_mask_utils import get_polygons, generate_coordinates_poly, get_all_coordinates
 
-
 import matplotlib.pyplot as plt 
 import random
 import json
@@ -30,8 +29,8 @@ class MyWindow:
 
         window.add(tab1, text ='Options & Parameters')
         window.add(tab1bis, text ='Image settings')
-        window.add(tab2, text ='Blinking')
-        window.add(tab3, text ='Own blinking')
+        window.add(tab2, text ='Photophysics')
+        window.add(tab3, text ='Custom blinking')
         window.add(tab4, text ='Previzualise Image')
         window.add(tab4bis, text='Use pattern')
         window.add(tab5, text ='Run simulation')
@@ -146,7 +145,6 @@ class MyWindow:
         self.random_unique_blink_value.grid(row=2, column=2, columnspan=1, sticky="W", pady=10, ipadx=1)
 
 
-
         # # Range for on time length
         self.space = Label(tab2, text=" ", bg='#464646').grid(row=3, column=0, sticky='W')
         self.on_time_text = Label(tab2, text="On time duration (in frame number)", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
@@ -179,7 +177,7 @@ class MyWindow:
 
 
         # ------- OWN BLINKING SEQUENCE -------
-        self.text = Text(tab3, height = 6, width = 60, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.text = Text(tab3, height = 7, width = 60, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.text.grid(row=0, column=0, sticky='WE', padx=10, pady=10)
         self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2, 3, 4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
 
@@ -187,8 +185,23 @@ class MyWindow:
         self.check_use_perso.set(False)
         self.use_perso = Button(tab3, text="Validate", command=self.use_own_sequence, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
         self.use_perso.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
-    
+        self.space1 = Label(tab3, text=" ", bg='#464646').grid(row=2, column=0, sticky='W')
 
+        # PALM setup
+        self.photophysics_text = Label(tab3, text='SMLM METHODS', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", font='bold')
+        self.photophysics_text.grid(row=3, column=0, sticky='W', padx=5)
+        self.use_palm = BooleanVar()
+        self.use_palm.set(False)
+        self.check_me_for_palm = Checkbutton(tab3, text='Use PALM photophysic', variable=self.use_palm, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.check_me_for_palm.grid(row=4, column=0, sticky='W', padx=5, pady=3)
+        self.use_dnapaint = BooleanVar()
+        self.use_dnapaint.set(False)
+        self.check_me_for_dnapaint = Checkbutton(tab3, text='Use DNA-PAINT photophysic (NOT DONE)', variable=self.use_dnapaint, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.check_me_for_dnapaint.grid(row=5, column=0, sticky='W', padx=5, pady=3)
+        self.use_storm = BooleanVar()
+        self.use_storm.set(False)
+        self.check_me_for_storm = Checkbutton(tab3, text='Use dSTORM photophysic (NOT DONE)', variable=self.use_storm, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.check_me_for_storm.grid(row=6, column=0, sticky='W', padx=5, pady=3)        
 
         # ------- RUN SIMULATION SEQUENCE -------
         self.run = Button(tab5, text='Generate TIF stack', command=self.set, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
@@ -206,10 +219,10 @@ class MyWindow:
         # Grid coordinates
         self.use_grille = BooleanVar()
         self.use_grille.set(False)
-        self.checkgrille = Checkbutton(tab4bis, text='Set points as a grid', variable=self.use_grille, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
-        self.checkgrille.grid(row=1, column=1, sticky='W', pady=3)
+        self.checkgrille = Checkbutton(tab4bis, text='Set points as a grid', variable=self.use_grille, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.checkgrille.grid(row=1, column=1, sticky='W', padx=10, pady=3)
 
-        # Grid coordinates
+        # Circle coordinates
         self.use_circle = BooleanVar()
         self.use_circle.set(False)
         self.checkcircle = Checkbutton(tab4bis, text='Create circle of single molecule', variable=self.use_circle, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
@@ -219,7 +232,7 @@ class MyWindow:
         
         # Load binary image
         self.use_mask_button = Button(tab4bis, text='Load binary image', command=self.load_binary_mask, activebackground='#464646', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
-        self.use_mask_button.grid(row=3, column=1,  sticky="W", padx=20, pady=40)
+        self.use_mask_button.grid(row=3, column=1,  sticky="W", padx=10, pady=3)
         self.binary_image = None
         self.polygons = None
         self.polygons_coordinates = None
@@ -404,7 +417,8 @@ class MyWindow:
                     coordinates_binary=self.polygons_coordinates, 
                     use_density = self.use_density.get(),
                     is_loaded=self.load_data_bool.get(), 
-                    loaded_data=self.data_loaded)
+                    loaded_data=self.data_loaded, 
+                    use_palm=self.use_palm.get())
         return image
         
 
@@ -439,10 +453,6 @@ class MyWindow:
             edge_ = int(self.edge.get())/5
             size_image = 500 - edge_
             molecules = int((size_image*0.16)*float(self.density.get()))*int((size_image*0.16)*float(self.density.get()))
-            # if (self.use_circle.get()==True) and (int(self.num_circle.get()) != 0):
-            #     surface = 60*pi/2   
-            #     mean_blink, mean_ON = (blk_min+blk_max)/2, (lgt_min+lgt_max)/2
-            #     molecules = int(float(self.density.get())*surface/(mean_blink*mean_ON))*frames
             
         generate_stack(frames, molecules, filename+'.tif', 
                     randomize=True, 
@@ -465,4 +475,5 @@ class MyWindow:
                     coordinates_binary=self.polygons_coordinates,
                     use_density = self.use_density.get(),
                     is_loaded=self.load_data_bool.get(), 
-                    loaded_data=self.data_loaded)
+                    loaded_data=self.data_loaded, 
+                    use_palm=self.use_palm.get())
