@@ -13,9 +13,11 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=2500, randomize=T
     data = dict()
     if use_density == True:
         image = dict()
-        on = int(((off_length_max+off_length_min)/2)*((number_blink_min+number_blink_max)/2))
+        # on = int(((off_length_max+off_length_min)/2)*((number_blink_min+number_blink_max)/2))+1
+        on = off_length_max*number_blink_max
         nbr_per_frame = nbr_molecules
         total = int(nbr_per_frame*(frames/on))
+        total += int(total*0.05)
         total_loc = list()
         for i in range(total):
             total_loc.append([i]*on)

@@ -24,6 +24,8 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
                                    coordinates_binary=coordinates_binary, use_density=use_density)
     if is_loaded == True:
         points = loaded_data
+        for i in points.keys():
+            points[i]['intensity'] = intensity
     if save == False:
         data = generate_one_frame(points, y_image, frame=0)
         gaussian_image = gaussian_filter(data, sigma=5)

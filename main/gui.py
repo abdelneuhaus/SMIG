@@ -179,7 +179,7 @@ class MyWindow:
 
 
         # ------- OWN BLINKING SEQUENCE -------
-        self.text = Text(tab3, height = 10, width = 60, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.text = Text(tab3, height = 6, width = 60, bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.text.grid(row=0, column=0, sticky='WE', padx=10, pady=10)
         self.text.insert(1.0,'Sequence structure\n\nThe separator between value is a comma (eg: 2, 3, 4)\nA sequence can be created using a - (eg: 2, 3, 4-10)\nDelete this before entering a sequence\nKeep in mind your number of frames\nDon\'t forget to validate')
 
@@ -187,6 +187,7 @@ class MyWindow:
         self.check_use_perso.set(False)
         self.use_perso = Button(tab3, text="Validate", command=self.use_own_sequence, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
         self.use_perso.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
+    
 
 
         # ------- RUN SIMULATION SEQUENCE -------
