@@ -80,6 +80,7 @@ class MyWindow:
         self.number_of_mol_text.grid(row=0, column=0, sticky='W', padx=5, pady=10)
         self.number_of_mol = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
         self.number_of_mol.grid(row=0, column=1, sticky="WE", pady=3)
+        
 
         self.avg_intensity = Label(tab1bis, text="Molecules Integrated Intensity", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.avg_intensity.grid(row=1, column=0, sticky='W', padx=5, pady=10)
@@ -105,13 +106,25 @@ class MyWindow:
 
         # Density
         self.density_text = Label(tab1bis, text='Density', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
-        self.density_text.grid(row=5, column=0, sticky='W', padx=5, pady=3)
+        self.density_text.grid(row=6, column=0, sticky='W', padx=5, pady=3)
         self.density = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
-        self.density.grid(row=5, column=1, columnspan=1, sticky="W", pady=10, ipadx=1)
+        self.density.grid(row=6, column=1, columnspan=1, sticky="W", pady=10, ipadx=1)
         self.use_density = BooleanVar()
         self.use_density.set(False)
-        self.checkme = Checkbutton(tab1bis, text='Use density', variable=self.use_density, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
-        self.checkme.grid(row=5, column=2, sticky='W', padx=10, pady=3)
+        self.checkme = Checkbutton(tab1bis, text='Use density', variable=self.use_density, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")#, width=20, height=5)
+        self.checkme.grid(row=6, column=2, sticky='W', padx=10, pady=3)
+        
+        self.space2 = Label(tab1bis, text=" ", bg='#464646').grid(row=5, column=0, sticky='W')
+
+        self.tracking_text = Label(tab1bis, text='Displacement', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
+        self.tracking_text.grid(row=7, column=0, sticky='W', padx=5, pady=3)
+        
+        self.use_tracking = BooleanVar()
+        self.use_tracking.set(False)
+        self.checktrack = Checkbutton(tab1bis, text='Add displacement (in pixel)', variable=self.use_tracking, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.checktrack.grid(row=7, column=2, sticky='W', padx=10, pady=3)
+        self.pixel_track = Entry(tab1bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.pixel_track.grid(row=7, column=1, sticky="W", pady=0)#, ipadx=1)
 
 
 
@@ -335,13 +348,18 @@ class MyWindow:
         self.use_circle.set(False)
         self.use_grille.set(False)
         self.num_circle.delete(0, "end")
-        self.clear_plot()
+        try:
+            self.clear_plot()
+        except AttributeError:
+            pass
         self.polygons = None
         self.polygons_coordinates = None
         self.binary_image = None
         self.load_data_bool.set(False)
         self.load_data = None
         self.data_loaded = None
+        self.pixel_track.delete(0, "end")
+        self.use_tracking.set(False)
 
 
 
@@ -361,6 +379,8 @@ class MyWindow:
         self.sd_intensity.insert(0,'0')
         self.num_circle.insert(0,'0')
         self.delete.set(False)
+        self.pixel_track.insert(0, "0")
+        self.use_tracking.set(False)
    
    
     def press_to_show(self):
@@ -383,7 +403,7 @@ class MyWindow:
     def previzualize(self):
         molecules = int(self.number_of_mol.get())
         filename = str(self.file_name.get())
-        edge = int(self.edge.get())
+        edge = int(self.edge.get())*5
         if self.check_use_perso.get() == False:
             blink_seq = None
         else:
@@ -419,7 +439,9 @@ class MyWindow:
                     is_loaded=self.load_data_bool.get(), 
                     loaded_data=self.data_loaded, 
                     use_palm=self.use_palm.get(),
-                    use_storm=self.use_storm.get())
+                    use_storm=self.use_storm.get(),
+                    shift=False, 
+                    shift_value=0)
         return image
         
 
@@ -427,7 +449,7 @@ class MyWindow:
         molecules = int(self.number_of_mol.get())
         frames = int(self.number_of_frames.get())
         filename = str(self.file_name.get())
-        edge = int(self.edge.get())
+        edge = int(self.edge.get())*5
         
         if (str(self.random_unique_blink_value.get()) != ''):
             blk_min = int(self.random_unique_blink_value.get())
@@ -478,4 +500,6 @@ class MyWindow:
                     is_loaded=self.load_data_bool.get(), 
                     loaded_data=self.data_loaded, 
                     use_palm=self.use_palm.get(),
-                    use_storm=self.use_storm.get())
+                    use_storm=self.use_storm.get(),
+                    shift=self.use_tracking.get(), 
+                    shift_value=int(self.pixel_track.get())*5)

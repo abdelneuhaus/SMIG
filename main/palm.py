@@ -1,9 +1,10 @@
 import random
 
+
 def palm_blinking_pattern(frames, molecules):
     bleached = int(0.4*frames)
     begin_bleached = int(0.6*frames)
-    nbr_on_times = list(range(1,4))
+    nbr_on_times = list(range(2,5))
     nbr_blinks = list(range(int(frames*0.25), int(frames*0.3)))
     all_times = list(range(0, frames))
     filtered_on_times = list(range(0, frames-begin_bleached))

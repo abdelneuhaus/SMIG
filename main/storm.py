@@ -11,8 +11,8 @@ def storm_blinking_pattern(frames, molecules):
     end_times = list(range(frames-bleached, frames))
     semi_bleach = list(range(frames-begin_bleached, frames-bleached))
 
-    popou = [False, False, False, True, True, True, True, True, True, True]
-    pipou = [False, False, False, False, False, True, True, True, True, True]
+    popou = [False, False, True, True, True, True, True, True, True, True]
+    pipou = [False, False, False, False, True, True, True, True, True, True]
     data = []
     for j in range(molecules):
         on = []
