@@ -5,6 +5,7 @@ from add_noise import add_noise
 from save_data import save_data
 from save_parameters import save_parameters
 from palm import palm_blinking_pattern
+from storm import storm_blinking_pattern
 
 from scipy.ndimage import gaussian_filter
 import tifffile
@@ -13,7 +14,7 @@ import numpy as np
 def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=60000, ii_sd=0, x_image=2500, y_image=2500, length_min=1, length_max=3, 
                                    blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, blinking_seq=None, edge=0, save=True, grid=False, 
                                    circle=False, num_circle=0, binary_file=None, coordinates_binary=None, use_density=False, is_loaded=False, 
-                                   loaded_data=None, use_palm=None):
+                                   loaded_data=None, use_palm=None, use_storm=None):
     points = create_molecules_data(frames, 
                                    nbr_molecules=nb_emitters, 
                                    size_image=x_image, 
@@ -28,6 +29,10 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         palm = palm_blinking_pattern(frames, nb_emitters)
         for i in points.keys():
             points[i]['on_times'] = palm[i]
+    elif use_storm == True:
+        storm = storm_blinking_pattern(frames, nb_emitters)
+        for i in points.keys():
+            points[i]['on_times'] = storm[i]
     if is_loaded == True:
         points = loaded_data
         for i in points.keys():

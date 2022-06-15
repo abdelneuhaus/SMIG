@@ -187,7 +187,7 @@ class MyWindow:
         self.use_perso.grid(row=1, column=0, sticky='WE', padx=10, pady=3)
         self.space1 = Label(tab3, text=" ", bg='#464646').grid(row=2, column=0, sticky='W')
 
-        # PALM setup
+        # SMLM setup
         self.photophysics_text = Label(tab3, text='SMLM METHODS', bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb", font='bold')
         self.photophysics_text.grid(row=3, column=0, sticky='W', padx=5)
         self.use_palm = BooleanVar()
@@ -197,11 +197,11 @@ class MyWindow:
         self.use_dnapaint = BooleanVar()
         self.use_dnapaint.set(False)
         self.check_me_for_dnapaint = Checkbutton(tab3, text='Use DNA-PAINT photophysic (NOT DONE)', variable=self.use_dnapaint, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
-        self.check_me_for_dnapaint.grid(row=5, column=0, sticky='W', padx=5, pady=3)
+        self.check_me_for_dnapaint.grid(row=6, column=0, sticky='W', padx=5, pady=3)
         self.use_storm = BooleanVar()
         self.use_storm.set(False)
-        self.check_me_for_storm = Checkbutton(tab3, text='Use dSTORM photophysic (NOT DONE)', variable=self.use_storm, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
-        self.check_me_for_storm.grid(row=6, column=0, sticky='W', padx=5, pady=3)        
+        self.check_me_for_storm = Checkbutton(tab3, text='Use dSTORM photophysic', variable=self.use_storm, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.check_me_for_storm.grid(row=5, column=0, sticky='W', padx=5, pady=3)        
 
         # ------- RUN SIMULATION SEQUENCE -------
         self.run = Button(tab5, text='Generate TIF stack', command=self.set, bg='#464646', fg='#edebeb', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb", width=20, height=5)
@@ -418,7 +418,8 @@ class MyWindow:
                     use_density = self.use_density.get(),
                     is_loaded=self.load_data_bool.get(), 
                     loaded_data=self.data_loaded, 
-                    use_palm=self.use_palm.get())
+                    use_palm=self.use_palm.get(),
+                    use_storm=self.use_storm.get())
         return image
         
 
@@ -476,4 +477,5 @@ class MyWindow:
                     use_density = self.use_density.get(),
                     is_loaded=self.load_data_bool.get(), 
                     loaded_data=self.data_loaded, 
-                    use_palm=self.use_palm.get())
+                    use_palm=self.use_palm.get(),
+                    use_storm=self.use_storm.get())
