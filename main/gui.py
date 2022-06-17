@@ -264,6 +264,7 @@ class MyWindow:
                 self.data_loaded = json.load(f)
             self.load_data_bool.set(True)
             self.data_loaded = {int(k):v for k,v in self.data_loaded.items()}
+            print("Done")
         except:
             print("No JSON loaded")
         
@@ -360,6 +361,9 @@ class MyWindow:
         self.data_loaded = None
         self.pixel_track.delete(0, "end")
         self.use_tracking.set(False)
+        self.use_palm.set(False)
+        self.use_dnapaint.set(False)
+        self.use_storm.set(False)
 
 
 
@@ -413,6 +417,8 @@ class MyWindow:
         if (self.use_density.get() == True) and (self.density.get() != 'None'):
             edge_ = int(self.edge.get())/5
             size_image = 500 - edge_
+            if self.use_circle.get() == True:
+                size_image=60*int(self.num_circle.get())
             molecules = int((size_image*0.16)*float(self.density.get()))*int((size_image*0.16)*float(self.density.get()))
 
         image = generate_stack(1, molecules, filename+'.tif', 

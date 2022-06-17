@@ -8,9 +8,23 @@ def save_data(points, filename):
         dictionary[i] = {
             'coordinates': np.array(points[i]['coordinates'], dtype='uint16').tolist(),
             'intensity': int(points[i]['intensity']),
-            'on_times': np.array(points[i]['on_times'], dtype='uint16').tolist()
+            'on_times': np.array(points[i]['on_times'], dtype='uint16').tolist(),
+            'shift': int(points[i]['shift'])
+
         }
     json_object = json.dumps(dictionary, indent = 4)
   
     with open(filename+".json", "w") as outfile:
         outfile.write(json_object)
+
+    with open(str(filename)+'.txt', 'w') as f:
+        f.write('id \t')
+        f.write('approximative coordinates (x,y) \t')
+        f.write('blinking frames \n')
+        for line in points.keys():
+            f.write(str(line))
+            f.write('\t')
+            f.write(str(tuple(ti/(2500/500) for ti in points[line]['coordinates'])[::-1]))
+            f.write('\t')
+            f.write(str([x+1 for x in points[line]['on_times']]))
+            f.write('\n')

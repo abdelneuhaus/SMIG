@@ -38,7 +38,7 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         for i in points.keys():
             points[i]['intensity'] = intensity
     if save == False:
-        data = generate_one_frame(points, y_image, frame=0)
+        data, points = generate_one_frame(points, y_image, frame=0)
         gaussian_image = gaussian_filter(data, sigma=5)
         down_image = downsampling(gaussian_image)
         out = add_noise(down_image, bckg=background_value, sd=sd_bckg_value)
