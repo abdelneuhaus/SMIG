@@ -16,12 +16,12 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
         on = off_length_max*number_blink_max
         nbr_per_frame = nbr_molecules
         total = int(nbr_per_frame*(frames/on))
-        total += int(total*0.05)
+        total += int(total*0.2)
         total_loc = list()
         for i in range(total):
             total_loc.append([i]*on)
         total_loc = [j for i in total_loc for j in i]
-        
+
         # create frame and which molecule is ON on it
         for i in range(frames):
             tmp = list()
@@ -31,9 +31,9 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
                 tmp.append(a)
             image[i] = tmp
 
-        # find at which frame a molecule is blinking
+        # find at which frame a molecule is ON
         dic = dict()
-        for j in range(total):
+        for j in range(nbr_per_frame):
             tmp = []
             for i in (image.keys()):
                 if j in image[i]:
@@ -62,7 +62,6 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
                 x=random.sample(range(edge+(max(radii)), size_image-edge-(max(radii))), 1)[0]
                 y=random.sample(range(edge+(max(radii)), size_image-edge-(max(radii))), 1)[0]
                 origin.append([x, y])
-                
                 
         # General protocol        
         for i in range(nbr_molecules):
