@@ -1,8 +1,11 @@
 import numpy as np
 import random
+from astropy.modeling.models import Gaussian2D
+import matplotlib.pyplot as plt
 
 def generate_one_frame(molecules, image_size, frame=0, shift=0):
-    image = np.zeros((image_size, image_size))
+    y, x = np.mgrid[0:image_size, 0:image_size]
+    cpt = 0
     pipou = [True, False]
     for j in range(len(molecules)):
         if molecules[j]['on_times'].__contains__(frame) == True:
@@ -18,7 +21,13 @@ def generate_one_frame(molecules, image_size, frame=0, shift=0):
                 molecules[j]['coordinates'][1] -= molecules[j]['shift']
             molecules[j]['shift'] += shift
             try:
-                image[molecules[j]['coordinates'][0]][molecules[j]['coordinates'][1]] = molecules[j]['intensity']
+                gm1 = Gaussian2D(molecules[j]['intensity']/6, molecules[j]['coordinates'][0], molecules[j]['coordinates'][1], 1, 1)
+                if cpt == 0:
+                    g1 = gm1(x, y)
+                    cpt +=1
+                else:
+                    g1 += gm1(x,y)
             except IndexError:
                 pass
-    return np.array(image), molecules
+    plt.show()
+    return np.array(g1, dtype='uint16'), molecules

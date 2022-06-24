@@ -24,7 +24,7 @@ def save_data(points, filename):
         for line in points.keys():
             f.write(str(line))
             f.write('\t')
-            f.write(str(tuple(ti/(2500/500) for ti in points[line]['coordinates'])[::-1]))
+            f.write(str(tuple(ti/(500/500) for ti in points[line]['coordinates'])[::-1]))
             f.write('\t')
             f.write(str([x+1 for x in points[line]['on_times']]))
             f.write('\n')

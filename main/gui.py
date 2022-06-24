@@ -407,7 +407,7 @@ class MyWindow:
     def previzualize(self):
         molecules = int(self.number_of_mol.get())
         filename = str(self.file_name.get())
-        edge = int(self.edge.get())*5
+        edge = int(self.edge.get())
         if self.check_use_perso.get() == False:
             blink_seq = None
         else:
@@ -415,7 +415,7 @@ class MyWindow:
         bkg_value = int(self.background_value.get())
         sd_bkg_value = int(self.sd_bg_value.get())
         if (self.use_density.get() == True) and (self.density.get() != 'None'):
-            edge_ = int(self.edge.get())/5
+            edge_ = int(self.edge.get())
             size_image = 500 - edge_
             if self.use_circle.get() == True:
                 size_image=60*int(self.num_circle.get())
@@ -425,8 +425,8 @@ class MyWindow:
                     randomize=True, 
                     intensity=int(self.intensity.get()),
                     ii_sd=int(self.sd_intensity.get()),
-                    x_image=2500, 
-                    y_image=2500,
+                    x_image=1000, 
+                    y_image=1000,
                     length_min=1, 
                     length_max=1, 
                     blink_min=1, 
@@ -455,7 +455,7 @@ class MyWindow:
         molecules = int(self.number_of_mol.get())
         frames = int(self.number_of_frames.get())
         filename = str(self.file_name.get())
-        edge = int(self.edge.get())*5
+        edge = int(self.edge.get())
         
         if (str(self.random_unique_blink_value.get()) != ''):
             blk_min = int(self.random_unique_blink_value.get())
@@ -479,7 +479,7 @@ class MyWindow:
         sd_bkg_value = int(self.sd_bg_value.get())
         
         if (self.use_density.get() == True) and (self.density.get() != 'None'):
-            edge_ = int(self.edge.get())/5
+            edge_ = int(self.edge.get())
             size_image = 500 - edge_
             molecules = int((size_image*0.16)*float(self.density.get()))*int((size_image*0.16)*float(self.density.get()))
             
@@ -487,8 +487,8 @@ class MyWindow:
                     randomize=True, 
                     intensity=int(self.intensity.get()),
                     ii_sd=int(self.sd_intensity.get()),
-                    x_image=2500, 
-                    y_image=2500,
+                    x_image=500, 
+                    y_image=500,
                     length_min=lgt_min, 
                     length_max=lgt_max, 
                     blink_min=blk_min, 

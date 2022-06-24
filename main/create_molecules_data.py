@@ -6,7 +6,7 @@ from generate_circle_coordinates import generate_circle_coordinates
 import random
 
 
-def create_molecules_data(frames, nbr_molecules=20, size_image=2500, randomize=True, value=100000, 
+def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=True, value=100000, 
                           ii_sd=0, off_length_min=1, off_length_max=3, number_blink_min=1, number_blink_max=3, 
                           own_blink=None, edge=0, grid=False, circle=False, num_circle=0, 
                           binary_file=None, coordinates_binary=None, use_density=False, shift=False, shift_value=0):
@@ -56,7 +56,7 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=2500, randomize=T
         
         # Circle checked
         if circle == True:
-            radii=[300]*num_circle
+            radii=[50]*num_circle
             origin = []
             for i in range(num_circle):
                 x=random.sample(range(edge+(max(radii)), size_image-edge-(max(radii))), 1)[0]
