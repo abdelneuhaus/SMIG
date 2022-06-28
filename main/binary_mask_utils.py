@@ -56,15 +56,11 @@ def generate_coordinates_poly(poly):
     xs, ys = zip(*poly)
     minx, maxx = min(xs), max(xs)
     miny, maxy = min(ys), max(ys)
-
-    newPoly = [(int(x - minx), int(y - miny)) for (x, y) in poly]
-
+    newPoly = [(x - minx, y - miny) for (x, y) in poly]
     X = maxx - minx + 1
     Y = maxy - miny + 1
-
     grid = np.zeros((X, Y), dtype=np.int8)
     mahotas.polygon.fill_polygon(newPoly, grid)
-
     return [(x + minx, y + miny) for (x, y) in zip(*np.nonzero(grid))]
 
 

@@ -6,9 +6,9 @@ from save_parameters import save_parameters
 from palm import palm_blinking_pattern
 from storm import storm_blinking_pattern
 
-# from scipy.ndimage import gaussian_filter
 import tifffile
 import numpy as np
+from astropy.modeling.models import Gaussian2D
 
 def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=60000, ii_sd=0, x_image=2500, y_image=2500, length_min=1, length_max=3, 
                                    blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, blinking_seq=None, edge=0, save=True, grid=False, 
@@ -36,6 +36,7 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         points = loaded_data
         for i in points.keys():
             points[i]['intensity'] = intensity
+            points[i]['model'] = Gaussian2D(points[i]['intensity'], points[i]['coordinates'][0], points[i]['coordinates'][1], 1, 1)
     if save == False:
         data, points = generate_one_frame(points, y_image, frame=0)
         out = add_noise(data, bckg=background_value, sd=sd_bckg_value)
@@ -46,7 +47,7 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         return out
     with tifffile.TiffWriter(filename) as tif:
         for i in range(frames):
-            data, points = generate_one_frame(points, y_image, frame=i, shift=shift)
+            data, points = generate_one_frame(points, y_image, frame=i, shift=shift_value)
             out = add_noise(data, bckg=background_value, sd=sd_bckg_value)
             if binary_file != None:
                 a = np.rot90(out, 3)

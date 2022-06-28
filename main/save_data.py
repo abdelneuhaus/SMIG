@@ -6,10 +6,10 @@ def save_data(points, filename):
     dictionary = dict()
     for i in range(len(points)):
         dictionary[i] = {
-            'coordinates': np.array(points[i]['coordinates'], dtype='uint16').tolist(),
+            'coordinates': points[i]['coordinates'],
             'intensity': int(points[i]['intensity']),
             'on_times': np.array(points[i]['on_times'], dtype='uint16').tolist(),
-            'shift': int(points[i]['shift'])
+            'shift': points[i]['shift']
 
         }
     json_object = json.dumps(dictionary, indent = 4)
@@ -24,7 +24,7 @@ def save_data(points, filename):
         for line in points.keys():
             f.write(str(line))
             f.write('\t')
-            f.write(str(tuple(ti/(500/500) for ti in points[line]['coordinates'])[::-1]))
+            f.write(str(tuple(ti for ti in points[line]['coordinates'])[::-1]))
             f.write('\t')
             f.write(str([x+1 for x in points[line]['on_times']]))
             f.write('\n')

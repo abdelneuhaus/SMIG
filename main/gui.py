@@ -253,7 +253,6 @@ class MyWindow:
     
     def load_molecule_data(self):
         filetypes = (('JSON files', '*.json'), ('All files', '*.*'))
-
         try:
             self.load_data = fd.askopenfilename(
                 title='Open a file',
@@ -282,10 +281,8 @@ class MyWindow:
                 filetypes=filetypes)
             
             polygons = get_polygons(self.binary_image)
-            tmp = list()
             otp = get_all_coordinates(polygons)
-            for i in range(len(polygons)):
-                tmp.append(generate_coordinates_poly(otp[i]))
+            tmp = [generate_coordinates_poly(otp[i]) for i in range(len(polygons))]
             self.polygons_coordinates = [j for i in tmp for j in i]
             print("Done")
         except:
@@ -423,8 +420,8 @@ class MyWindow:
 
         image = generate_stack(1, molecules, filename+'.tif', 
                     randomize=True, 
-                    intensity=int(self.intensity.get()),
-                    ii_sd=int(self.sd_intensity.get()),
+                    intensity=int(self.intensity.get())/6,
+                    ii_sd=int(self.sd_intensity.get())/6,
                     x_image=500, 
                     y_image=500,
                     length_min=1, 
@@ -485,8 +482,8 @@ class MyWindow:
             
         generate_stack(frames, molecules, filename+'.tif', 
                     randomize=True, 
-                    intensity=int(self.intensity.get()),
-                    ii_sd=int(self.sd_intensity.get()),
+                    intensity=int(self.intensity.get())/6,
+                    ii_sd=int(self.sd_intensity.get())/6,
                     x_image=500, 
                     y_image=500,
                     length_min=lgt_min, 
@@ -508,4 +505,4 @@ class MyWindow:
                     use_palm=self.use_palm.get(),
                     use_storm=self.use_storm.get(),
                     shift=self.use_tracking.get(), 
-                    shift_value=int(self.pixel_track.get())*5)
+                    shift_value=float(self.pixel_track.get()))

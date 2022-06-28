@@ -4,8 +4,7 @@ import random
 def storm_blinking_pattern(frames, molecules):
     bleached = int(0.1*frames)
     begin_bleached = int(0.3*frames)
-    nbr_on_times = 1#list(range(1,2))
-    nbr_blinks = list(range(int(frames*0.4), int(frames*0.55)))
+    nbr_blinks = list(range(int(frames*0.1), int(frames*0.2)))
     all_times = list(range(0, frames))
     filtered_on_times = list(range(0, frames-begin_bleached))
     end_times = list(range(frames-bleached, frames))
@@ -18,7 +17,7 @@ def storm_blinking_pattern(frames, molecules):
         on = []
         blink = random.choice(nbr_blinks)
         for i in range(0, blink):
-            on_length = 1#random.choice(nbr_on_times)
+            on_length = 3
             tmp = random.choice(all_times)
             papou = random.choice(pipou)
             pepou = random.choice(popou)
