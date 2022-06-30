@@ -13,7 +13,9 @@ from astropy.modeling.models import Gaussian2D
 def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=60000, ii_sd=0, x_image=2500, y_image=2500, length_min=1, length_max=3, 
                                    blink_min=1, blink_max=3, background_value=750, sd_bckg_value=6, blinking_seq=None, edge=0, save=True, grid=False, 
                                    circle=False, num_circle=0, binary_file=None, coordinates_binary=None, use_density=False, is_loaded=False, 
-                                   loaded_data=None, use_palm=None, use_storm=None, shift=False, shift_value=0):
+                                   loaded_data=None, use_palm=None, use_storm=None, shift=False, shift_value=0, brownian_value=0, 
+                                   use_brownian=False, randomwalk_value=0, use_randomwalk=False):
+    
     points = create_molecules_data(frames, 
                                    nbr_molecules=nb_emitters, 
                                    size_image=x_image, 
@@ -47,7 +49,9 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         return out
     with tifffile.TiffWriter(filename) as tif:
         for i in range(frames):
-            data, points = generate_one_frame(points, y_image, frame=i, shift=shift_value)
+            data, points = generate_one_frame(points, y_image, frame=i, shift=shift_value, 
+                                              brownian_value=brownian_value, use_brownian=use_brownian,
+                                              randomwalk_value=randomwalk_value, use_randomwalk=use_randomwalk)
             out = add_noise(data, bckg=background_value, sd=sd_bckg_value)
             if binary_file != None:
                 a = np.rot90(out, 3)

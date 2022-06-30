@@ -10,8 +10,8 @@ def save_data(points, filename):
             'intensity': int(points[i]['intensity']),
             'on_times': np.array(points[i]['on_times'], dtype='uint16').tolist(),
             'shift': points[i]['shift']
-
         }
+        
     json_object = json.dumps(dictionary, indent = 4)
   
     with open(filename+".json", "w") as outfile:

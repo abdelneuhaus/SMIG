@@ -10,9 +10,13 @@ def generate_on_times(frames, randomize=True, off_length_min=1, off_length_max=3
         return list(range(a,b))
     if randomize == True:
         for i in range (number_blink):
-            off_length = random.choice(list(range(off_length_min, off_length_max+1)))
-            a = random.randint(0, frames-off_length+1)
-            blink.append(random.sample(range(a, a+off_length), off_length))
+            if off_length_max != off_length_min or number_blink_max != number_blink_min:
+                off_length = random.choice(list(range(off_length_min, off_length_max+1)))
+                a = random.randint(0, frames-off_length+1)
+                blink.append(random.sample(range(a, a+off_length), off_length))
+            elif off_length_max == off_length_min and number_blink_max != number_blink_min:
+                blink.append(random.choice(list(range(0, frames+1))))
+        print(blink)
         return sorted(set([j for i in blink for j in i]))
     else:
         return list(range(frames-10, frames+1, 1))[::1]

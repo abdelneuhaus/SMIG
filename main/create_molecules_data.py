@@ -17,8 +17,8 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
         image = dict()
         on = off_length_max*number_blink_max
         nbr_per_frame = nbr_molecules
-        total = int(nbr_per_frame*(frames/on))
-        total += int(total*0.2)
+        total = nbr_per_frame*int(frames/on)
+        # total += int(total*0.1)
         total_loc = list()
         for i in range(total):
             total_loc.append([i]*on)
@@ -35,14 +35,13 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
 
         # find at which frame a molecule is ON
         dic = dict()
-        for j in range(nbr_per_frame):
+        for j in range(total):
             tmp = []
             for i in (image.keys()):
                 if j in image[i]:
                     tmp.append(i)
                 dic[j] = tmp
-        
-        
+
         ######## DENSITY ########
         # Creation of data with binary image
         if binary_file != None:
@@ -72,7 +71,7 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
                 origin.append([x, y])
                 
         # General protocol        
-        for i in range(nbr_molecules):
+        for i in range(total):
             if (own_blink == None):
                 if grid == True:
                     data[i] = {'coordinates': generate_grid_coordinates(size_image, edge), 'intensity': generate_intensity(value, ii_sd), 'on_times': dic[i], 'shift':0}

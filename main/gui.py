@@ -250,6 +250,25 @@ class MyWindow:
         self.polygons = None
         self.polygons_coordinates = None
         
+        self.space3 = Label(tab1bis, text=" ", bg='#464646').grid(row=4, column=0, sticky='W')
+        
+        # Use Brownian motion
+        self.use_brownian = BooleanVar()
+        self.use_brownian.set(False)
+        self.checkbrownian = Checkbutton(tab4bis, text='Max jump for Brownian motion (pixel)', variable=self.use_brownian, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.checkbrownian.grid(row=5, column=1, sticky='W', padx=10, pady=3)
+        self.brown_value = Entry(tab4bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.brown_value.grid(row=5, column=2, sticky="W", pady=10, ipadx=1)
+        
+        # Use random walk 
+        self.use_rw = BooleanVar()
+        self.use_rw.set(False)
+        self.checkrw = Checkbutton(tab4bis, text='Max jump for random walk (pixel)', variable=self.use_rw, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.checkrw.grid(row=6, column=1, sticky='W', padx=10, pady=3)
+        self.rw_value = Entry(tab4bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
+        self.rw_value.grid(row=6, column=2, sticky="W", pady=10, ipadx=1)
+        
+
     
     def load_molecule_data(self):
         filetypes = (('JSON files', '*.json'), ('All files', '*.*'))
@@ -345,6 +364,10 @@ class MyWindow:
         self.check_use_perso.set(False)
         self.use_circle.set(False)
         self.use_grille.set(False)
+        self.use_brownian.set(False)
+        self.use_rw.set(False)
+        self.brown_value.delete(0, "end")
+        self.rw_value.delete(0, "end")
         self.num_circle.delete(0, "end")
         try:
             self.clear_plot()
@@ -382,6 +405,10 @@ class MyWindow:
         self.delete.set(False)
         self.pixel_track.insert(0, "0")
         self.use_tracking.set(False)
+        self.rw_value.insert(0, "0")
+        self.use_rw.set(False)
+        self.brown_value.insert(0, "0")
+        self.use_brownian.set(False)
    
    
     def press_to_show(self):
@@ -505,4 +532,8 @@ class MyWindow:
                     use_palm=self.use_palm.get(),
                     use_storm=self.use_storm.get(),
                     shift=self.use_tracking.get(), 
-                    shift_value=float(self.pixel_track.get()))
+                    shift_value=float(self.pixel_track.get()),
+                    brownian_value=float(self.brown_value.get()), 
+                    use_brownian=self.use_brownian.get(),
+                    randomwalk_value=float(self.rw_value.get()),
+                    use_randomwalk=self.use_rw.get())
