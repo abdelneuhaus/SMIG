@@ -15,15 +15,12 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
     data = dict()
     if use_density == True:
         image = dict()
-        on = off_length_max*number_blink_max
         nbr_per_frame = nbr_molecules
-        total = nbr_per_frame*int(frames/on)
-        # total += int(total*0.1)
         total_loc = list()
-        for i in range(total):
-            total_loc.append([i]*on)
+        for i in range(nbr_per_frame):
+            total_loc.append([i]*frames)            
         total_loc = [j for i in total_loc for j in i]
-
+        
         # create frame and which molecule is ON on it
         for i in range(frames):
             tmp = list()
@@ -35,7 +32,7 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
 
         # find at which frame a molecule is ON
         dic = dict()
-        for j in range(total):
+        for j in range(nbr_per_frame):
             tmp = []
             for i in (image.keys()):
                 if j in image[i]:
@@ -71,7 +68,7 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
                 origin.append([x, y])
                 
         # General protocol        
-        for i in range(total):
+        for i in range(nbr_per_frame):
             if (own_blink == None):
                 if grid == True:
                     data[i] = {'coordinates': generate_grid_coordinates(size_image, edge), 'intensity': generate_intensity(value, ii_sd), 'on_times': dic[i], 'shift':0}
@@ -100,7 +97,7 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
                 z = random.choice(otp)
                 otp.remove(z)
                 if (own_blink == None):
-                    data[i] = {'coordinates': list(z), 'intensity': generate_intensity(value, ii_sd), 'on_times': generate_on_times(frames, randomize=randomize, off_length_min=off_length_min, off_length_max=off_length_max, number_blink_min=number_blink_min, number_blink_max=number_blink_max), 'shift':0}
+                    data[cpt] = {'coordinates': list(z), 'intensity': generate_intensity(value, ii_sd), 'on_times': generate_on_times(frames, randomize=randomize, off_length_min=off_length_min, off_length_max=off_length_max, number_blink_min=number_blink_min, number_blink_max=number_blink_max), 'shift':0}
                 else:
                     data[cpt] = {'coordinates': list(z), 'intensity': generate_intensity(value, ii_sd), 'on_times': own_blink, 'shift':0}
                 cpt += 1
@@ -139,4 +136,5 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
             data[i]['shift'] = shift_value
     for i in data.keys():
         data[i]['model'] = Gaussian2D(data[i]['intensity'], data[i]['coordinates'][0], data[i]['coordinates'][1], 1, 1)
+
     return data
