@@ -50,6 +50,4 @@ def generate_one_frame(molecules, image_size, frame=0, shift=0, brownian_value=0
                 img += molecules[j]['model'](x, y)
             except IndexError:
                 pass
-    print("")
-    print(save)
     return img, molecules
