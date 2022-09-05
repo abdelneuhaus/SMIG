@@ -158,7 +158,7 @@ class MyWindow:
         self.random_unique_blink_value.grid(row=2, column=2, columnspan=1, sticky="W", pady=10, ipadx=1)
 
 
-        # # Range for on time length
+        # Range for on time length
         self.space = Label(tab2, text=" ", bg='#464646').grid(row=3, column=0, sticky='W')
         self.on_time_text = Label(tab2, text="On time duration (in frame number)", bg='#464646', fg='#edebeb', highlightthickness=0, highlightbackground="#edebeb")
         self.on_time_text.grid(row=4, column=0, sticky='W', padx=5, pady=10)
@@ -255,7 +255,7 @@ class MyWindow:
         # Use Brownian motion
         self.use_brownian = BooleanVar()
         self.use_brownian.set(False)
-        self.checkbrownian = Checkbutton(tab4bis, text='Max jump for Brownian motion (pixel)', variable=self.use_brownian, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
+        self.checkbrownian = Checkbutton(tab4bis, text='Diffusion coefficient (brownian motion)', variable=self.use_brownian, fg='#edebeb', onvalue=True, offvalue=False, bg='#464646', highlightcolor='#464646', selectcolor='#464646', activebackground='#464646', highlightthickness=0, highlightbackground="#edebeb")
         self.checkbrownian.grid(row=5, column=1, sticky='W', padx=10, pady=3)
         self.brown_value = Entry(tab4bis, width=7, bg='#464646', fg='#edebeb', highlightthickness=1, highlightbackground="#edebeb")
         self.brown_value.grid(row=5, column=2, sticky="W", pady=10, ipadx=1)
@@ -277,11 +277,14 @@ class MyWindow:
                 title='Open a file',
                 initialdir='.',
                 filetypes=filetypes)
-
             with open(self.load_data, 'r') as f:
                 self.data_loaded = json.load(f)
             self.load_data_bool.set(True)
             self.data_loaded = {int(k):v for k,v in self.data_loaded.items()}
+            if '_diffusion' in self.load_data:
+                for i in range(len(self.data_loaded)):
+                    self.data_loaded[i]['on_times'] = [self.data_loaded[i]['frame']]
+                    self.data_loaded[i]['shift'] = 0
             print("Done")
         except:
             print("No JSON loaded")

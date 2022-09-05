@@ -1,6 +1,8 @@
+from json import load
 from generate_one_frame import generate_one_frame
 from create_molecules_data import create_molecules_data
 from add_noise import add_noise
+from save_data_diffusion import save_data_diffusion
 from save_data import save_data
 from save_parameters import save_parameters
 from palm import palm_blinking_pattern
@@ -15,7 +17,8 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
                                    circle=False, num_circle=0, binary_file=None, coordinates_binary=None, use_density=False, is_loaded=False, 
                                    loaded_data=None, use_palm=None, use_storm=None, shift=False, shift_value=0, brownian_value=0, 
                                    use_brownian=False, randomwalk_value=0, use_randomwalk=False):
-    
+    if is_loaded == True:
+        nb_emitters = len(loaded_data)
     points = create_molecules_data(frames, 
                                    nbr_molecules=nb_emitters, 
                                    size_image=x_image, 
@@ -35,10 +38,12 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         for i in points.keys():
             points[i]['on_times'] = storm[i]
     if is_loaded == True:
-        points = loaded_data
         for i in points.keys():
             points[i]['intensity'] = intensity
-            points[i]['model'] = Gaussian2D(points[i]['intensity'], points[i]['coordinates'][0], points[i]['coordinates'][1], 1, 1)
+            points[i]['model'] = Gaussian2D(loaded_data[i]['intensity'], loaded_data[i]['coordinates'][0], loaded_data[i]['coordinates'][1], 1, 1)
+            points[i]['coordinates'][0], points[i]['coordinates'][1] = loaded_data[i]['coordinates'][0], loaded_data[i]['coordinates'][1]
+            points[i]['on_times'] = loaded_data[i]['on_times']
+            points[i]['index'] = loaded_data[i]['index']
     if save == False:
         data, points = generate_one_frame(points, y_image, frame=0)
         out = add_noise(data, bckg=background_value, sd=sd_bckg_value)
@@ -47,16 +52,39 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
             a = np.flip(a)
             return np.flipud(a)
         return out
+    toSave = {}
     with tifffile.TiffWriter(filename) as tif:
+        k = 0
         for i in range(frames):
             data, points = generate_one_frame(points, y_image, frame=i, shift=shift_value, 
                                               brownian_value=brownian_value, use_brownian=use_brownian,
-                                              randomwalk_value=randomwalk_value, use_randomwalk=use_randomwalk)
+                                              randomwalk_value=randomwalk_value, use_randomwalk=use_randomwalk, is_loaded=is_loaded)
+            
+            for u in range(len(points)):
+                if points[u]['on_times'].__contains__(i) == True:
+                    if is_loaded == True:
+                        toSave[k] = {
+                                'frame': int(i),
+                                'index': int(points[u]['index']),
+                                'coordinates': list(points[u]['coordinates']),
+                                'intensity': int(points[u]['intensity'])
+                            }
+                    else:    
+                        toSave[k] = {
+                                'frame': int(i),
+                                'index': int(u),
+                                'coordinates': list(points[u]['coordinates']),
+                                'intensity': int(points[u]['intensity'])
+                            }
+                    k += 1
             out = add_noise(data, bckg=background_value, sd=sd_bckg_value)
             if binary_file != None:
                 a = np.rot90(out, 3)
                 b = np.flip(a)
                 out = np.flipud(b)
             tif.write(np.array(out, dtype='uint16'), photometric='minisblack')
-            save_data(points, filename)
+            if use_brownian == False:
+                save_data(points, filename)
+        if use_brownian == True:
+            save_data_diffusion(toSave, filename)
         save_parameters(filename, frames, nb_emitters, intensity, length_min, length_max, blink_min, blink_max, background_value, sd_bckg_value, blinking_seq, edge)

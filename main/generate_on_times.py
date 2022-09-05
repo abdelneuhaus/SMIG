@@ -18,9 +18,11 @@ def generate_on_times(frames, randomize=True, off_length_min=1, off_length_max=3
                 blink.append(random.sample(range(a, a+off_length), off_length))
             
         elif off_length_min == off_length_max and number_blink_max == number_blink_min:
+            if off_length_max*number_blink_max == frames:
+                return list(range(0, frames))
+            pattern = list(range(0, frames))
             for i in range(number_blink):
-                pattern = list(range(0, frames))
-                if number_blink_max == 1:
+                if number_blink_max == 1 and off_length_max >= (frames/2) and frames >= 30:
                     for i in range(frames-off_length_min):
                         i = random.randrange(len(pattern)) # get random index
                         pattern[i], pattern[-1] = pattern[-1], pattern[i]    # swap with the last element
@@ -29,20 +31,18 @@ def generate_on_times(frames, randomize=True, off_length_min=1, off_length_max=3
                 elif off_length_max == off_length_min and off_length_min == 1:
                     for i in range(frames-number_blink_max):
                         blink.append(random.randint(0,frames))
-                else:           
-                    a = random.choice(pattern)
-                    b = list(range(a-1, a+off_length_min))
-                    pattern = list(set(pattern) - set(b))
-                    blink += b[1:]
+                else:
+                    while True:
+                        try:
+                            a = random.choice(pattern)
+                            b = list(range(a, a+off_length_min))
+                            c = list(range(a-off_length_min, a))
+                            pattern = list(set(pattern) - set(b) - set(c))
+                            blink += b[1:]
+                        except IndexError:
+                            pass
+                        break        
             return blink
-        
-        elif off_length_max == off_length_min and number_blink_max != number_blink_min:
-            for i in range(number_blink):
-                blink.append(random.choice(list(range(0, frames+1))))
-            
-        elif off_length_max == off_length_min and off_length_min == frames:
-            for i in range(number_blink):
-                blink.append(list(range(0, frames)))
         return sorted(set([j for i in blink for j in i]))
     else:
         return list(range(frames-10, frames+1, 1))[::1]

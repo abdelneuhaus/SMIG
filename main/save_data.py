@@ -6,7 +6,7 @@ def save_data(points, filename):
     dictionary = dict()
     for i in range(len(points)):
         dictionary[i] = {
-            'coordinates': np.array(points[i]['coordinates'], dtype='uint16').tolist(),
+            'coordinates': points[i]['coordinates'],
             'intensity': int(points[i]['intensity']),
             'on_times': np.array(points[i]['on_times'], dtype='uint16').tolist(),
             'shift': np.array(points[i]['shift'], dtype='uint16').tolist()
