@@ -40,7 +40,7 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
     if is_loaded == True:
         for i in points.keys():
             points[i]['intensity'] = intensity
-            points[i]['model'] = Gaussian2D(loaded_data[i]['intensity'], loaded_data[i]['coordinates'][0], loaded_data[i]['coordinates'][1], 1, 1)
+            points[i]['model'] = Gaussian2D(intensity, points[i]['coordinates'][0], points[i]['coordinates'][1], 1, 1)
             points[i]['coordinates'][0], points[i]['coordinates'][1] = loaded_data[i]['coordinates'][0], loaded_data[i]['coordinates'][1]
             points[i]['on_times'] = loaded_data[i]['on_times']
             points[i]['index'] = loaded_data[i]['index']
@@ -67,7 +67,7 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
                                 'frame': int(i),
                                 'index': int(points[u]['index']),
                                 'coordinates': list(points[u]['coordinates']),
-                                'intensity': int(points[u]['intensity'])
+                                'intensity': int(intensity)
                             }
                     else:    
                         toSave[k] = {
