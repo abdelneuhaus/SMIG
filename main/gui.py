@@ -32,7 +32,7 @@ class MyWindow:
         window.add(tab2, text ='Photophysics')
         window.add(tab3, text ='Custom blinking')
         window.add(tab4, text ='Previzualise Image')
-        window.add(tab4bis, text='Use pattern')
+        window.add(tab4bis, text='Pattern & Diffusion')
         window.add(tab5, text ='Run simulation')
         window.pack(expand = 1, fill ="both")
 
