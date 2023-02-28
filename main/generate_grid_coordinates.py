@@ -1,20 +1,18 @@
 import random
 
-
 def generate_grid_coordinates(size_image, edge):
-    side = random.sample(range(0,5), 1)[0]
-    if side == 0:   
-        other = random.uniform(edge, size_image-edge)
-        return[round(other, 1), round(other, 1)]
-    elif side == 1:
-        other = random.uniform(edge*2, size_image-(2*edge))
-        return [round(other, 1), round(other-edge, 1)]
-    elif side == 2:
-        other = random.uniform(edge*2, size_image-(2*edge))
-        return [round(other, 1), round(other+edge, 1)]
-    elif side == 3:
-        other = random.uniform(edge*2, size_image-(2*edge))
-        return [round(size_image-other, 1), round(other, 1)]
-    elif side == 4:
-        other = random.uniform(edge*2, size_image-(2*edge))
-        return [round(other+edge, 1), round(size_image-other, 1)]
+    side = random.choice(range(5))
+    other_range = (edge*2, size_image-(2*edge))
+    if side == 0:
+        other = round(random.uniform(*other_range), 1)
+        return [other, other]
+    offset_options = [
+        (0, 1),
+        (0, -1),
+        (1, 0),
+        (-1, 0),
+    ]
+    offset = random.choice(offset_options)
+    other = round(random.uniform(*other_range), 1)
+    return [round(size_image/2 + offset[0] * edge + offset[1] * other, 1), round(size_image/2 + offset[1] * edge + offset[0] * other, 1)]
+

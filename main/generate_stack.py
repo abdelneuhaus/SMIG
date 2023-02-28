@@ -54,29 +54,24 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
         return out
     toSave = {}
     with tifffile.TiffWriter(filename) as tif:
-        k = 0
+        toSave = []
         for i in range(frames):
             data, points = generate_one_frame(points, y_image, frame=i, shift=shift_value, 
-                                              brownian_value=brownian_value, use_brownian=use_brownian,
-                                              randomwalk_value=randomwalk_value, use_randomwalk=use_randomwalk, is_loaded=is_loaded)
-            
-            for u in range(len(points)):
-                if points[u]['on_times'].__contains__(i) == True:
-                    if is_loaded == True:
-                        toSave[k] = {
-                                'frame': int(i),
-                                'index': int(points[u]['index']),
-                                'coordinates': list(points[u]['coordinates']),
-                                'intensity': int(intensity)
-                            }
-                    else:    
-                        toSave[k] = {
-                                'frame': int(i),
-                                'index': int(u),
-                                'coordinates': list(points[u]['coordinates']),
-                                'intensity': int(points[u]['intensity'])
-                            }
-                    k += 1
+                                            brownian_value=brownian_value, use_brownian=use_brownian,
+                                            randomwalk_value=randomwalk_value, use_randomwalk=use_randomwalk, is_loaded=is_loaded)
+
+            to_save_points = [
+                {
+                    'frame': int(i),
+                    'index': int(points[u]['index']) if is_loaded else int(u),
+                    'coordinates': list(points[u]['coordinates']),
+                    'intensity': int(intensity) if is_loaded else int(points[u]['intensity'])
+                }
+                for u in range(len(points))
+                if i in points[u]['on_times']
+            ]
+            toSave += to_save_points
+
             out = add_noise(data, bckg=background_value, sd=sd_bckg_value)
             if binary_file != None:
                 a = np.rot90(out, 3)
