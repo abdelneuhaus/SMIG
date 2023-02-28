@@ -118,19 +118,12 @@ def create_molecules_data(frames, nbr_molecules=20, size_image=500, randomize=Tr
             
     # General protocol        
     for i in range(nbr_molecules):
-        if (own_blink == None):
-            if grid == True:
-                data[i] = {'coordinates': generate_grid_coordinates(size_image, edge), 'intensity': generate_intensity(value, ii_sd), 'on_times': generate_on_times(frames, randomize=randomize, off_length_min=off_length_min, off_length_max=off_length_max, number_blink_min=number_blink_min, number_blink_max=number_blink_max), 'shift':0}
-            elif circle == True:
-                data[i] = {'coordinates': generate_circle_coordinates(size_image, edge, origin=origin, radius=radii), 'intensity': generate_intensity(value, ii_sd), 'on_times': generate_on_times(frames, randomize=randomize, off_length_min=off_length_min, off_length_max=off_length_max, number_blink_min=number_blink_min, number_blink_max=number_blink_max), 'shift':0}
-            else:
-                data[i] = {'coordinates': generate_coordinates(size_image, edge), 'intensity': generate_intensity(value, ii_sd), 'on_times': generate_on_times(frames, randomize=randomize, off_length_min=off_length_min, off_length_max=off_length_max, number_blink_min=number_blink_min, number_blink_max=number_blink_max), 'shift':0}
-        else:
-            if grid == True:
-                data[i] = {'coordinates': generate_grid_coordinates(size_image, edge), 'intensity': generate_intensity(value, ii_sd), 'on_times': generate_on_times(frames, randomize=randomize, off_length_min=off_length_min, off_length_max=off_length_max, number_blink_min=number_blink_min, number_blink_max=number_blink_max), 'shift':0}
-            else:
-                data[i] = {'coordinates': generate_coordinates(size_image, edge), 'intensity': generate_intensity(value, ii_sd), 'on_times': own_blink, 'shift':0}
-    
+        coordinates_func = generate_grid_coordinates if grid else generate_circle_coordinates if circle else generate_coordinates
+        coordinates = coordinates_func(size_image, edge, origin=origin, radius=radii) if circle else coordinates_func(size_image, edge)
+        on_times = generate_on_times(frames, randomize=randomize, off_length_min=off_length_min, off_length_max=off_length_max, number_blink_min=number_blink_min, number_blink_max=number_blink_max) if own_blink is None else own_blink
+        data[i] = {'coordinates': coordinates, 'intensity': generate_intensity(value, ii_sd), 'on_times': on_times, 'shift': 0}
+
+
     if shift == True:
         for i in data.keys():
             data[i]['shift'] = shift_value
