@@ -1,11 +1,9 @@
 numpy
 tifffile
-re
-random
 scipy
-tkinter
-cv2
+tk # tkinter
+opencv-python
 mahotas
 ttkthemes
-json
-matplotlib.pyplot
+matplotlib
+astropy[recommended]

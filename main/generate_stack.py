@@ -63,7 +63,7 @@ def generate_stack(frames, nb_emitters, filename, randomize=True, intensity=6000
             to_save_points = [
                 {
                     'frame': int(i),
-                    'index': int(points[u]['index']) if is_loaded else int(u),
+                    'index': int(u),
                     'coordinates': list(points[u]['coordinates']),
                     'intensity': int(intensity) if is_loaded else int(points[u]['intensity'])
                 }
